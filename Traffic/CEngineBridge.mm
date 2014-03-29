@@ -59,14 +59,28 @@ struct CEngineBridgeImpl : CEngine
     
     vector<CVehicle>::iterator it = internalVehicles.begin();
     
-    for(;it != vehicles.end(); it++)
+    for(;it != internalVehicles.end(); it++)
     {
-        //      EWVehicle vehicle = [EWVehicle init];
-        //    vehicle->Id = 123124;
-        
-        //  [result addObject:[EWVehicle init]
+        for(EWVehicle* vehicle in vehicles)
+        {
+            if(vehicle.Id == it->getID())
+            {
+                CGPoint position;
+                position.x = it->Position->getX();
+                position.y = it->Position->getY();
+                vehicle.center = position;
+                break;
+            }
+        }
     }
     
+}
+
+-(void) MoveVehicle:(EWVehicle *)vehicle
+{
+    CVehicle* internalVehicle = _cEngine->GetVehicle(vehicle.Id);
+    
+    _cEngine->MoveVehicle(vehicle.center.x, vehicle.center.y, internalVehicle);
 }
 
 -(EWVehicle*)UpdatePosition:(EWVehicle *)vehicle deltaTime:(CGFloat)deltaTime
@@ -129,14 +143,14 @@ void writeSomething()
 - (id) init
 {
     self = [super init];
-    //_cEngine = new CEngineBridgeImpl(logFunction);
-    _cEngine = new CEngineBridgeImpl();
+    _cEngine = new CEngineBridgeImpl(logFunction);
+    //_cEngine = new CEngineBridgeImpl();
     return self;
 }
 
 void logFunction(string message)
 {
-    message = "NSLog:" + message;
+    message = "NSLog:" + message + "\n";
     NSLog(getNSString(&message));
 }
 

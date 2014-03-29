@@ -43,5 +43,5 @@
 -(void) togglePause;
 -(BOOL) isPaused;
 -(EWLane*)laneAtPoint: (CGPoint)point;
--(void) vehicleMoved;
+-(void) vehicleMoved: (EWVehicle*) vehicle;
 @end

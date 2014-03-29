@@ -36,6 +36,7 @@ public:
     vector<CVehicle> GetAllVehicles(float deltaTime);
     CVehicle* GetNewVehicle(CLane* starterLane);
     CPosition* GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime);
+    void MoveVehicle(int x, int y, CVehicle* vehicle);
     
     int GetNumberOfVehicles();
     CVehicle* GetVehicle(int id);

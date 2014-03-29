@@ -70,6 +70,12 @@ vector<CVehicle> CEngine::GetAllVehicles(float deltaTime)
     return _vehicles;
 }
 
+void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
+{
+    vehicle->Position->setX(x);
+    vehicle->Position->setY(y);
+}
+
 CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime)
 {
     CPosition* position = vehicle->Position;
@@ -81,7 +87,7 @@ CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTim
     
     float lateralSpeed = 200;
     
-    if(vehicle->GoalLane != nullptr) {
+    /*if(vehicle->GoalLane != nullptr) {
         CPosition* goalLanePosition = vehicle->GoalLane->Position;
         float deltaX = abs(goalLanePosition->getX() - position->getX());
         
@@ -92,7 +98,7 @@ CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTim
             position->setX(position->getX() - (lateralSpeed * deltaTime));
         else if(position->getX() < goalLanePosition->getX())
             position->setX(position->getX() + (lateralSpeed * deltaTime));
-    }
+    }*/
 
     
     return position;

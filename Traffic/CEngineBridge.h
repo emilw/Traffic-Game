@@ -18,6 +18,7 @@
 -(EWLane*)SyncLaneWithEngine: (EWLane*) lane;
 -(EWVehicle*)UpdatePosition: (EWVehicle*) vehicle deltaTime: (CGFloat) deltaTime;
 -(void)UpdatePosition: (NSMutableArray*) vehicles deltaTimes: (CGFloat) deltaTime;
+-(void)MoveVehicle: (EWVehicle*) vehicle;
 
 @property NSMutableArray* Vehicles;
 

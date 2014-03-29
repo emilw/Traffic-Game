@@ -110,7 +110,7 @@
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch* touch = [touches anyObject];
     //self.center = [touch locationInView:[self superview]];
-    [controller vehicleMoved];
+    [controller vehicleMoved: self];
     
     EWLane* lane = [controller laneAtPoint:[touch locationInView:self.superview]];
     

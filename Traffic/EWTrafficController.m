@@ -25,8 +25,9 @@
     totalTime = 0;
 }
 
--(void)vehicleMoved{
+-(void)vehicleMoved: (EWVehicle*) vehicle{
     AudioServicesPlaySystemSound(screechSoundID);
+    [engine MoveVehicle: vehicle];
 }
 
 -(void)gameOver{
@@ -108,8 +109,7 @@
     
     NSLog(@"Time %g", deltaTime);
     
-    
-        /*CGPoint position = v.center;
+       /* CGPoint position = v.center;
         CGFloat speed = v.speed;
         
         if(v.slowed){
