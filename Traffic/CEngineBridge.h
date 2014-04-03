@@ -24,19 +24,21 @@ NSString* getValue();
 -(EWLane*)SyncLaneWithEngine: (EWLane*) lane;
 -(void)UpdatePosition: (int) id;
 -(void)WriteSomething;
--(void)UpdatePosition: (NSMutableArray*) vehicles deltaTimes: (CGFloat) deltaTime;
+//-(void)UpdatePosition: (NSMutableArray*) vehicles deltaTimes: (CGFloat) deltaTime;
 
 //To keep
 -(void)StartGame;
 -(EWVehicle*)GetNewVehicle: (EWLane*) lane;
--(void)Update: (float) deltaTime;
--(void)MoveVehicle: (EWVehicle*) vehicle;
+-(void)Update;
+-(void)MoveVehicle: (EWVehicle*) vehicle to: (CGPoint) point;
 -(BOOL)IsGameOver;
 -(void)GameOverVehicleCrashed;
 -(void)GameOverTimeIsUp;
 -(void)UpdateRemainingTime: (float) timeLeft;
 -(void) GetNewVehicle;
 -(void) RemoveVehicle: (int) id;
+-(float) GetTotalTime;
+-(void) Resume;
 
 @property NSMutableArray* Vehicles;
 

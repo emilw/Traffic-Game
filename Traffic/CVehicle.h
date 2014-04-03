@@ -15,10 +15,12 @@
 #include "CLane.h"
 #include "CSize.h"
 #include "SharedEnum.h"
+#include "CFrame.h"
 
 using namespace std;
 
-class CVehicle{
+class CVehicle: public CFrame
+{
     
 private:
     int _id;
@@ -27,7 +29,7 @@ private:
     float _speed;
     bool _toBeRemoved = false;
 public:
-    CVehicle(int newId, Color color);//string* newCarType, int type);
+    CVehicle(int newId, Color color, float width, float height);
     Color Color;
     //Getters
     int getID();
@@ -36,20 +38,20 @@ public:
     float getSpeed();
     
     //External objects
-    CPosition* Position;
-    CSize* Size;
+    //CPosition* Position;
+    //CSize* Size;
     CLane* CurrentLane;
     
     //Methods
     bool EndOfTheRoad();
-    bool IsCollision(CVehicle* otherVehicle);
+    //bool IsCollision(CVehicle* otherVehicle);
     void Move(float x, float y);
     
     //Cordinates methods
-    float GetX1();
+    /*float GetX1();
     float GetX2();
     float GetY1();
-    float GetY2();
+    float GetY2();*/
     
     bool IsToBeRemoved();
     void MarkToBeRemoved();

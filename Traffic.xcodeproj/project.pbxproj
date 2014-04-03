@@ -33,6 +33,7 @@
 		201A039418CD0A52008844C2 /* CEngineBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 201A039218CD0A52008844C2 /* CEngineBridge.mm */; };
 		201A039718CE077C008844C2 /* EWTrafficController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201A039618CE077C008844C2 /* EWTrafficController.m */; };
 		201A039B18CE530F008844C2 /* EWLane.m in Sources */ = {isa = PBXBuildFile; fileRef = 201A039A18CE530F008844C2 /* EWLane.m */; };
+		205C676E18ED8F060062A6CB /* CFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 205C676C18ED8F060062A6CB /* CFrame.cpp */; };
 		2083AAB618D4B13400E20919 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2083AAB518D4B13400E20919 /* AVFoundation.framework */; };
 		2083AAB818D4B1C400E20919 /* MusicTrack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2083AAB718D4B1C400E20919 /* MusicTrack.mp3 */; };
 		2083AABB18D4BB6000E20919 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2083AABA18D4BB6000E20919 /* AudioToolbox.framework */; };
@@ -98,6 +99,8 @@
 		201A039918CE530F008844C2 /* EWLane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EWLane.h; sourceTree = "<group>"; };
 		201A039A18CE530F008844C2 /* EWLane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EWLane.m; sourceTree = "<group>"; };
 		205C676B18ED7C730062A6CB /* SharedEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedEnum.h; sourceTree = "<group>"; };
+		205C676C18ED8F060062A6CB /* CFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFrame.cpp; sourceTree = "<group>"; };
+		205C676D18ED8F060062A6CB /* CFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFrame.h; sourceTree = "<group>"; };
 		2083AAB518D4B13400E20919 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2083AAB718D4B1C400E20919 /* MusicTrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusicTrack.mp3; sourceTree = "<group>"; };
 		2083AAB918D4B8D100E20919 /* MusicTrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusicTrack.mp3; sourceTree = "<group>"; };
@@ -267,6 +270,8 @@
 				20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */,
 				20E8F00118E98ECC004361D5 /* CEnginePlugin.h */,
 				205C676B18ED7C730062A6CB /* SharedEnum.h */,
+				205C676C18ED8F060062A6CB /* CFrame.cpp */,
+				205C676D18ED8F060062A6CB /* CFrame.h */,
 			);
 			name = EngineCpp;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				201A039718CE077C008844C2 /* EWTrafficController.m in Sources */,
 				201A038318C77237008844C2 /* EWMainMenuViewController.m in Sources */,
 				201A035A18C62674008844C2 /* EWDataViewController.m in Sources */,
+				205C676E18ED8F060062A6CB /* CFrame.cpp in Sources */,
 				201A035D18C62674008844C2 /* EWModelController.m in Sources */,
 				201A039B18CE530F008844C2 /* EWLane.m in Sources */,
 				20E8EFF518E1CB9F004361D5 /* CVehicle.cpp in Sources */,

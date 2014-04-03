@@ -17,7 +17,7 @@ private:
     float _height;
     float _width;
 public:
-    CSize(float height, float width) {_height = height; _width = width;}
+    CSize(float width, float height) {_height = height; _width = width;}
     float GetHeight();
     float GetWidth();
 };

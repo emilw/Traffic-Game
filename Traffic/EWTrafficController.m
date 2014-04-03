@@ -22,66 +22,25 @@
     vehicles = [NSMutableArray arrayWithCapacity:10];
     vehiclesToRemove = [NSMutableArray arrayWithCapacity:10];
     lanes = [NSMutableArray arrayWithCapacity:3];
-    timeRemaining = 20;
-    totalTime = 0;
 }
 
--(void)vehicleMoved: (EWVehicle*) vehicle{
+-(void)vehicleMoved: (EWVehicle*) vehicle point: (CGPoint)point{
     AudioServicesPlaySystemSound(screechSoundID);
-    [engine MoveVehicle: vehicle];
+    [engine MoveVehicle: vehicle to: point];
 }
 
 -(void)gameOver{
-    
     //Game over
     if(!displayLink.paused)
         [self togglePause];
     
     [viewController displayGameOver];
-    [NSNumber numberWithFloat: totalTime];
+    [NSNumber numberWithFloat: [engine GetTotalTime]];
     
     EWAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
-    [delegate addHighScore:totalTime];
-    
+    [delegate addHighScore:[engine GetTotalTime]];
     [delegate stopBackgroundMusic];
 }
-
--(void)registerVehicle:(EWVehicle*) vehicle{
-    [vehicles addObject:(vehicle)];
-    
-    //NSLog(@"Car count %d", [vehicles count]);
-}
-
-/*
- //Logic moved to removeVehicles
- -(void)toBeRemoveVehicle:(EWVehicle*) vehicle{
-    [vehiclesToRemove addObject: vehicle];
-    [vehicle removeFromSuperview];
-    
-    if([vehicle correctLane])
-        timeRemaining = timeRemaining + 2;
-}*/
-
-/*-(void)removeVehicles{
-    for(EWVehicle* v in vehicles)
-    {
-        if(v.ToBeRemoved){
-            [v removeFromSuperview];
-        
-            if([v correctLane])
-                timeRemaining = timeRemaining + 2;
-        
-            [vehiclesToRemove addObject:v];
-        }
-    }
-    
-    
-    for(EWVehicle* v in vehiclesToRemove)
-    {
-        [vehicles removeObject: v];
-    }
-    [vehiclesToRemove removeAllObjects];
-}*/
 
 -(void)registerLane:(EWLane*)lane
 {
@@ -104,117 +63,10 @@
     AudioServicesCreateSystemSoundID((__bridge CFURLRef) crashURL, &crashSoundID);
     
     [engine StartGame];
-    //Audio
-}
-
--(EWLane*)laneAtPoint: (CGPoint)point {
-    for(EWLane* lane in lanes)
-    {
-        if(CGRectContainsPoint([lane frame], point))
-            return lane;
-    }
-    
-    return nil;
 }
 
 -(void) update:(CADisplayLink*)sender{
-    /*if(lastTimestamp <=0){
-        lastTimestamp = sender.timestamp;
-    }
-    
-    CGFloat deltaTime = sender.timestamp - lastTimestamp;
-    totalTime += deltaTime;
-    
-    timeRemaining -= deltaTime;
-    */
-    
-    //NSLog(@"Time %g", deltaTime);
-    
-    /*for(EWVehicle* v in vehicles)
-    {
-        
-    CGPoint position = v.center;
-        CGFloat speed = v.speed;
-        
-        if(v.slowed){
-            speed *= 0.5;
-        }
-        
-        position.y -= speed * deltaTime;
-        
-        CGFloat lateralSpeed = 200;
-        
-        if(v.goalLane != nil) {
-            CGPoint goalLanePosition = v.goalLane.center;
-            CGFloat deltaX = fabs(goalLanePosition.x - position.x);
-            
-            if(deltaX < 3)
-                position.x = goalLanePosition.x;
-            
-            if(position.x > goalLanePosition.x)
-                position.x -= lateralSpeed * deltaTime;
-            else if(position.x < goalLanePosition.x)
-                position.x += lateralSpeed * deltaTime;
-            
-            NSLog(@"\nTrafficController: Goal lane position x: %g, y: %g", goalLanePosition.x, goalLanePosition.y);
-        }
-        
-        v.center = position;
-        
-        NSLog(@"\nTrafficController: vehicle: %o, x: %g, y: %g", v.Id, v.center.x, v.center.y);
-        
-        
-        [engine UpdatePosition:v deltaTime:deltaTime];
-    }*/
-    
-    [engine Update: 0];
-    //[engine UpdatePosition:vehicles deltaTimes:deltaTime];
-    
-    /*for(EWVehicle* v in vehicles)
-    {
-        //Check collisions
-        for(EWVehicle* otherVehicle in vehicles)
-        {
-            if(otherVehicle == v) continue;
-            
-            CGRect myRect = CGRectInset(v.frame, 7,7);
-            CGRect other = CGRectInset(otherVehicle.frame, 7,7);
-            
-            if(CGRectIntersectsRect(myRect, other)) {
-                [self vehicle:v collidedWithVehicle:otherVehicle];
-                return;
-            }
-            
-        }
-    }*/
-      
-    /*if([engine IsGameOver])
-        [self vehicleCrashed];*/
-    
-    //[self removeVehicles];
-    
-    
-    
-    /*if(timeRemaining < 0) {
-        //Game over
-        if(!displayLink.paused)
-            [self togglePause];
-        [self gameOver];
-    }*/
-    
-    //lastTimestamp = sender.timestamp;
-}
-
--(void) vehicle:(EWVehicle*) vehicle collidedWithVehicle: (EWVehicle*) otherVehicle {
-    
-    AudioServicesPlaySystemSound(crashSoundID);
-    
-    NSLog(@"Vehicle %d collided with %d", vehicle.Id, otherVehicle.Id);
-    
-    //Game over
-    if(!displayLink.paused)
-        [self togglePause];
-    [self gameOver];
+    [engine Update];
 }
 
 -(void) vehicleCrashed
@@ -229,8 +81,7 @@
 }
 
 -(void)setTotalScore: (float) score{
-    [viewController setTotalScore: totalTime];
-    
+    [viewController setTotalScore: [engine GetTotalTime]];
 }
 
 -(void) togglePause{
@@ -248,7 +99,7 @@
         {
             [l stop];
         }
-        [self setTotalScore:totalTime];
+        [self setTotalScore:[engine GetTotalTime]];
     }
     else
     {
@@ -262,48 +113,17 @@
             [l start];
         }
         
-        lastTimestamp = CACurrentMediaTime();
+        [engine Resume];
+        
+        //lastTimestamp = CACurrentMediaTime();
     }
     
     NSLog(@"display link state is changed to: %i", displayLink.paused);
 }
 
 -(void) startCarFromLane: (EWLane*)starter {
-    /*NSString* carType;
-    
-    int type = random() % 3;
-    
-    switch(type) {
-        case 0:
-            carType = @"GreenCar";
-            break;
-        case 1:
-            carType = @"RedCar";
-            break;
-        case 2:
-            carType = @"BlueCar";
-            break;
-    }*/
-    
-    //EWVehicle* v = [[EWVehicle alloc] initWithName:carType];
-    
 #warning Let the engine select the lane etc. This method should probably removed fully
     EWVehicle* v = [engine GetNewVehicle: starter];
-    
-    //v.goalLane = starter;
-    //v.goalTag = type;
-    
-    /*[viewController.view addSubview:v];
-    [self registerVehicle:v];
-    
-    v.controller = self;*/
-    
-    //CGPoint position;
-    //position.x = starter.center.x;
-    //position.y = 480;
-    //v.center = position;
-    
-    //[v release];
 }
 
 -(void) addVehicleView:(EWVehicle *)vehicle
@@ -314,8 +134,7 @@
 
 -(void) updateRemainingTime:(float)remainingTime
 {
-    
-    [self.viewController setRemainingTime: remainingTime];//self.timeRemaining];
+    [self.viewController setRemainingTime: remainingTime];
 }
 
 

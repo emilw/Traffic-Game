@@ -11,22 +11,7 @@
 
 @implementation EWVehicle
 
-@synthesize speed, slowed, goalLane, controller, Id, ToBeRemoved;
-/*- (id)initWithFrame:(CGRect)frame
-{
-    UIImage* loadedImage = [UIImage imageNamed: @"RedCar.png"];
-    
-    CGRect rect = CGRectMake(frame.origin.x, frame.origin.y, loadedImage.size.width, loadedImage.size.height);
-    
-    self = [super initWithFrame:rect];
-    if (self) {
-        self.opaque = NO;
-        self.backgroundColor = [UIColor clearColor];
-    }
-    image = loadedImage;
-    return self;
-}*/
-
+@synthesize controller, Id;
 
 - (id)initWithName:(NSString*)name id:(int)instanceId
 {
@@ -53,26 +38,7 @@
     return self;
 }
 
-
--(BOOL)correctLane {
-    //NSInteger tag = self.goalLane.tag;
-    
-    /*if(tag == 0 && ([carType compare: @"BlueCar"]))
-        return YES;
-    else if(tag == 1 &&([carType compare:@"RedCar" ]))
-        return YES;
-    else if(tag == 2 && ([carType compare: @"GreenCar"]))
-        return YES;*/
-    
-    if(self.goalLane.tag == self.goalTag)
-        return YES;
-    
-    
-    //NSLog(@"FALSE");
-    return NO;
-    
-}
-
+/*
 -(BOOL)outsideOfLane {
     
     CGFloat vehicle = self.center.y;
@@ -86,7 +52,7 @@
     
     return NO;
     
-}
+}*/
 
 
 // Only override drawRect: if you perform custom drawing.
@@ -97,6 +63,7 @@
     [image drawInRect:rect];
 }
 
+//Only keep these for remembering the other events
 /*-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch* touch = [touches anyObject];
     self.center = [touch locationInView:[self superview]];
@@ -109,24 +76,9 @@
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch* touch = [touches anyObject];
-    //self.center = [touch locationInView:[self superview]];
     NSLog(@"Vehicle %d moved", self.Id);
     
-    EWLane* lane = [controller laneAtPoint:[touch locationInView:self.superview]];
-    
-    if(lane) {
-        self.goalLane = lane;
-        
-        NSLog(@"In a lane");
-    }
-    
-    [controller vehicleMoved: self];
+    [controller vehicleMoved: self point:[touch locationInView:self.superview]];
 }
-
-/*-(void)dealloc{
-    [image release];
-    [super dealloc];
-}*/
-
 
 @end

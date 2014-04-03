@@ -12,12 +12,14 @@
 #include <iostream>
 #include "CPosition.h"
 #include "SharedEnum.h"
-class CLane
+#include "CFrame.h"
+
+class CLane: public CFrame
 {
 public:
-    CLane(int id, Color color);
+    CLane(int id, Color color, float width, float height);
     int getID();
-    CPosition* Position;
+    //CPosition* Position;
     const int ENDOFTHELANE = -10;
     Color Color;
 private:

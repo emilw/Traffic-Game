@@ -19,7 +19,6 @@
     [highScore sortUsingSelector: @selector(compare:)];
     
     [highScore writeToFile:scoreListPath atomically:YES];
-    //NSString* scoreListPath = [documentDirectory stringByAppendingPathComponent:@"scores.plist"];
 }
 
 -(NSMutableArray*)getHighScore{
@@ -32,6 +31,7 @@
 
 -(void)stopBackgroundMusic{
     [musicPlayer stop];
+    [musicPlayer setCurrentTime:0.0];
 }
 
 

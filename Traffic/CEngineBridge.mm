@@ -79,14 +79,17 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
 {
     CLane* lane = _cEngine->GetNewLane((Color)inputLane.tag);
     inputLane.Id = lane->getID();
-    
+    NSLog(@"Cocoa Lane width: %f, height: %f, x: %f, y:%f", inputLane.frame.size.width, inputLane.frame.size.height, inputLane.center.x, inputLane.center.y);
     lane->Position->setX(inputLane.center.x);
     lane->Position->setY(inputLane.center.y);
+    
+    NSLog(@"Engine Lane width: %f, height: %f, x: %f, y: %f");
     
     return inputLane;
 }
 
--(void) UpdatePosition:(NSMutableArray *)vehicles deltaTimes: (CGFloat) deltaTime
+#warning This method is not used and should be removed, everything is done in Update
+/*-(void) UpdatePosition:(NSMutableArray *)vehicles deltaTimes: (CGFloat) deltaTime
 {
     vector<CVehicle> internalVehicles = _cEngine->GetAllVehicles();
     
@@ -101,22 +104,13 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
             {
                 
                 vehicle.ToBeRemoved = it->IsToBeRemoved();
-                //it->Position->setX(vehicle.center.x);
-                //it->Position->setY(vehicle.center.y);
-#warning try to move everything to GetAllVehicles and to try to get the MoveMethod to handle the update of X
-                //_cEngine->GetVehiclesCurrentPosition(&*it, deltaTime);
-                
-                /*CGPoint position;
-                position.x = it->Position->getX();
-                position.y = it->Position->getY();
-                vehicle.center = position;*/
                 vehicle.center = GetCGPointFromPosition(it->Position);
                 break;
             }
         }
     }
     
-}
+}*/
 
 CGPoint GetCGPointFromPosition(CPosition* cPosition)
 {
@@ -127,18 +121,14 @@ CGPoint GetCGPointFromPosition(CPosition* cPosition)
 
 }
 
--(void) MoveVehicle:(EWVehicle *)vehicle
+-(void) MoveVehicle:(EWVehicle *)vehicle to:(CGPoint)point
 {
     CVehicle* internalVehicle = _cEngine->GetVehicle(vehicle.Id);
-    CLane* goalLane = _cEngine->GetLane(vehicle.goalLane.Id);
-#warning Change this to be a intersect check with any of the existing lanes
-    internalVehicle->CurrentLane = goalLane;
-    internalVehicle->Move(vehicle.center.x, vehicle.center.y);
-    //_cEngine->MoveVehicle(vehicle.center.x, vehicle.center.y, internalVehicle);
+    _cEngine->MoveVehicle(point.x, point.y, internalVehicle);
 }
 
 //Updates all
--(void)Update: (float) deltaTime{
+-(void)Update{
     _cEngine->GetAllVehicles();
 }
 
@@ -272,10 +262,16 @@ NSString* getNSString(string* value)
     EWVehicle* vehicle = [_vehicleDictionary objectForKey:@(id)];
     [vehicle removeFromSuperview];
     
-    if([vehicle correctLane])
-        _controller.timeRemaining = _controller.timeRemaining + 2;
-    
     [_vehicleDictionary removeObjectForKey:@(id)];
+}
+
+-(float) GetTotalTime
+{
+    return _cEngine->GetTotalTime();
+}
+-(void) Resume
+{
+    _cEngine->Resume();
 }
 
 @end

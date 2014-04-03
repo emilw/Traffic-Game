@@ -33,14 +33,8 @@
 - (void) startTimerFired: (NSTimer*)timer{
     long newStartTime = random() % 1500 + 1000;
     [timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:newStartTime/1000.0]];
-    //[timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:newStartTime/1.0]];
-    
     
     [controller startCarFromLane:self];
-    
-    //NSLog(@"newStartTime %ld", newStartTime);
-    
-    //NSLog(@"Starting new car");
 }
 
 -(void)stop {

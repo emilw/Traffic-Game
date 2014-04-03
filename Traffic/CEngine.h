@@ -48,7 +48,7 @@ public:
     vector<CVehicle> GetAllVehicles();
     CVehicle* GetNewVehicle(CLane* starterLane);
     CPosition* GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime);
-    //void MoveVehicle(int x, int y, CVehicle* vehicle);
+    void MoveVehicle(int x, int y, CVehicle* vehicle);
     int GetNumberOfVehicles();
     CVehicle* GetVehicle(int id);
     
@@ -57,6 +57,9 @@ public:
     void StartGame();
     void GameOver(GameOverReason reason);
     float GetRemainingTime();
+    float GetTotalTime();
+    long long GetTimestamp();
+    void Resume();
     
     //Dummy tests
     void ExecuteMethod(void (*func)());
@@ -67,6 +70,7 @@ private:
     int _carIdCounter = 0;
     int _laneIdCounter = 0;
     float _remainingTime = 20;
+    float _totalTime = 0;
     //Milliseconds
     long long _lastTimestampMilliseconds = 0;
     //long _lastTimestamp = 0;

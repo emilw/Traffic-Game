@@ -25,18 +25,7 @@
 
 -(id)initWithName: (NSString*) name id: (int) instanceId;
 
--(BOOL)correctLane;
-
--(BOOL)outsideOfLane;
-
-@property (assign) CGFloat speed;
 @property (nonatomic, retain) EWTrafficController* controller;
-@property (readonly) BOOL slowed;
-
-@property (nonatomic, retain) EWLane* goalLane;
-@property (nonatomic) NSInteger goalTag;
-
-@property (nonatomic) BOOL ToBeRemoved;
 
 @property(nonatomic) int Id;
 

@@ -21,13 +21,9 @@
 
     NSMutableArray* lanes;
     
-    double timeRemaining;
-    double lastTimestamp;
-    
     SystemSoundID screechSoundID;
     SystemSoundID crashSoundID;
     
-    CGFloat totalTime;
     
     EWTrafficViewController* viewController;
     
@@ -42,8 +38,7 @@
 -(void) startCarFromLane: (EWLane*) starter;
 -(void) togglePause;
 -(BOOL) isPaused;
--(EWLane*)laneAtPoint: (CGPoint)point;
--(void) vehicleMoved: (EWVehicle*) vehicle;
+-(void) vehicleMoved: (EWVehicle*) vehicle point: (CGPoint) point;
 -(void) vehicleCrashed;
 -(void) updateRemainingTime: (float) remainingTime;
 -(void) addVehicleView: (EWVehicle*) vehicle;

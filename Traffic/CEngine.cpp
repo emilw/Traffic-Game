@@ -17,7 +17,8 @@ CEngine::CEngine(void (*printOutFunc) (string), CEnginePlugin* plugin)
 
 CLane* CEngine::GetNewLane(Color color)
 {
-    CLane* newLane = new CLane(this->getNextLaneId(), color);
+#warning Should not be hard coded sizes, should be height according to the screen height and screen width / 3
+    CLane* newLane = new CLane(this->getNextLaneId(), color, 60, 568);
     _lanes.push_back(*newLane);
     
     Log("Lane with Id: " + to_string(newLane->getID()));
@@ -61,7 +62,7 @@ string* CEngine::getValue()
     return new string("Dude from cpp");
 }
 
-float CEngine::GetUpdatedDeltaTimeInSeconds()
+long long CEngine::GetTimestamp()
 {
     //Get the time poninter to now
     auto now = std::chrono::system_clock::now();
@@ -70,7 +71,21 @@ float CEngine::GetUpdatedDeltaTimeInSeconds()
     auto duration = now.time_since_epoch();
     
     //Use the duration object to calculate the milliseconds from epoch to now
-    auto timestampNow = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+}
+
+float CEngine::GetUpdatedDeltaTimeInSeconds()
+{
+    /*//Get the time poninter to now
+    auto now = std::chrono::system_clock::now();
+    
+    //Get the duration from epoch time point to now
+    auto duration = now.time_since_epoch();
+    
+    //Use the duration object to calculate the milliseconds from epoch to now
+    auto timestampNow = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();*/
+    
+    auto timestampNow = GetTimestamp();
     
     
     //cout << "milisecs: " << timestampNow << std::endl;
@@ -96,11 +111,16 @@ float CEngine::GetUpdatedDeltaTimeInSeconds()
     return deltaTimeSecs;
 }
 
+float CEngine::GetTotalTime()
+{
+    return _totalTime;
+}
+
 vector<CVehicle> CEngine::GetAllVehicles()
 {
     double deltaTime = this->GetUpdatedDeltaTimeInSeconds();
     
-    //deltaTime = deltaT;
+    _totalTime = _totalTime + deltaTime;
     
     printf("delta time: %f \n", deltaTime);
     
@@ -174,11 +194,22 @@ vector<CVehicle> CEngine::GetAllVehicles()
     return _vehicles;
 }
 
-/*void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
+void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
 {
-    vehicle->Position->setX(x);
-    vehicle->Position->setY(y);
-}*/
+    vehicle->Move(x, y);
+    
+    vector<CLane>::iterator it = _lanes.begin();
+    
+    for(;it != _lanes.end(); it++)
+    {
+        if(it->IsInFrame(x,y))
+        {
+            vehicle->CurrentLane = &*it;
+            break;
+        }
+        
+    }
+}
 
 CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime)
 {
@@ -236,7 +267,7 @@ CVehicle* CEngine::GetNewVehicle(CLane* starterLane)
             break;
     }
     
-    CVehicle* vehicle = new CVehicle(this->getNextCarId(), color);
+    CVehicle* vehicle = new CVehicle(this->getNextCarId(), color, 58, 65);
     
     vehicle->CurrentLane = starterLane;
     vehicle->Position->setX(starterLane->Position->getX());
@@ -318,4 +349,9 @@ void CEngine::AddExtraTime()
 float CEngine::GetRemainingTime()
 {
     return _remainingTime;
+}
+
+void CEngine::Resume()
+{
+    _lastTimestampMilliseconds = GetTimestamp();
 }

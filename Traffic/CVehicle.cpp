@@ -9,28 +9,13 @@
 #include "CVehicle.h"
 
 
-CVehicle::CVehicle(int newId, enum Color color)//string* newCarType, int type)
+CVehicle::CVehicle(int newId, enum Color color, float width, float height)
 {
     Color = color;
     _id = newId;
-    //_carType = newCarType;
-    //_type = type;
-    _speed = 100;
-    Position = new CPosition(0,0);
-    Size = new CSize(65, 58);
-}
-
-bool CVehicle::IsCollision(CVehicle *otherVehicle)
-{
-    //Get the cordinates for the otherVehicle
-    if(otherVehicle->GetX1() < this->GetX2() &&
-       otherVehicle->GetX2() > this->GetX1() &&
-       otherVehicle->GetY1() < this->GetY2() &&
-       otherVehicle->GetY2() > this->GetY1()){
-        return true;
-    }
     
-    return false;
+    _speed = 100;
+    Size = new CSize(width, height);
 }
 
 float CVehicle::getSpeed()
@@ -76,6 +61,20 @@ void CVehicle::Move(float x, float y)
     this->Position->setY(y);
 }
 
+/*bool CVehicle::IsCollision(CVehicle *otherVehicle)
+{
+    //Get the cordinates for the otherVehicle
+    if(otherVehicle->GetX1() < this->GetX2() &&
+       otherVehicle->GetX2() > this->GetX1() &&
+       otherVehicle->GetY1() < this->GetY2() &&
+       otherVehicle->GetY2() > this->GetY1()){
+        return true;
+    }
+    
+    return false;
+}
+
+
 float CVehicle::GetX1()
 {
     return this->Position->getX() - (this->Size->GetWidth()/2);
@@ -94,4 +93,4 @@ float CVehicle::GetY1()
 float CVehicle::GetY2()
 {
     return this->Position->getY() + (this->Size->GetHeight()/2);
-}
+}*/
