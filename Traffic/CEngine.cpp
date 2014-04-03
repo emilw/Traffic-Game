@@ -8,9 +8,16 @@
 
 #include "CEngine.h"
 
-CLane* CEngine::GetNewLane()
+CEngine::CEngine(void (*printOutFunc) (string), CEnginePlugin* plugin)
 {
-    CLane* newLane = new CLane(this->getNextLaneId());
+    logFunction = printOutFunc;
+    _gameOver = false;
+    _enginePlugin = plugin;
+}
+
+CLane* CEngine::GetNewLane(Color color)
+{
+    CLane* newLane = new CLane(this->getNextLaneId(), color);
     _lanes.push_back(*newLane);
     
     Log("Lane with Id: " + to_string(newLane->getID()));
@@ -54,8 +61,60 @@ string* CEngine::getValue()
     return new string("Dude from cpp");
 }
 
-vector<CVehicle> CEngine::GetAllVehicles(float deltaTime)
+float CEngine::GetUpdatedDeltaTimeInSeconds()
 {
+    //Get the time poninter to now
+    auto now = std::chrono::system_clock::now();
+    
+    //Get the duration from epoch time point to now
+    auto duration = now.time_since_epoch();
+    
+    //Use the duration object to calculate the milliseconds from epoch to now
+    auto timestampNow = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    
+    
+    //cout << "milisecs: " << timestampNow << std::endl;
+    
+    double deltaTime = 0;
+    
+    //Check if it's the first run
+    if(_lastTimestampMilliseconds != 0)
+    {
+        deltaTime = timestampNow - _lastTimestampMilliseconds;
+    }
+    
+    //Convert the delta time to seconds
+    double deltaTimeSecs = deltaTime;
+    
+    deltaTimeSecs = deltaTimeSecs/1000.0000000;
+    
+    cout << "secs: " << deltaTimeSecs << std::endl;
+    
+    //Update the latest time stamp to now, for the next run
+    _lastTimestampMilliseconds = timestampNow;
+    
+    return deltaTimeSecs;
+}
+
+vector<CVehicle> CEngine::GetAllVehicles()
+{
+    double deltaTime = this->GetUpdatedDeltaTimeInSeconds();
+    
+    //deltaTime = deltaT;
+    
+    printf("delta time: %f \n", deltaTime);
+    
+    //float deltaT = 0;
+    
+    /*if(_lastTimestamp != 0)
+    {
+        deltaT = timeStampNow - _lastTimestamp;
+        
+        printf("%f timestampnow, last timestamp %f, delta %f", timeStampNow, _lastTimestamp, deltaT);
+    }*/
+    
+    _remainingTime = _remainingTime - deltaTime;
+    
     
     vector<CVehicle>::iterator it = _vehicles.begin();
     
@@ -63,18 +122,63 @@ vector<CVehicle> CEngine::GetAllVehicles(float deltaTime)
     
     for(;it != _vehicles.end(); it++)
     {
+        _enginePlugin->PreUpdateVehicle(&*it);
+        
         updatedPosition = GetVehiclesCurrentPosition(&*it, deltaTime);
         it->Position = updatedPosition;
+        
+        //Mark the vehicle to be removed
+        if(!it->IsToBeRemoved() && it->EndOfTheRoad())
+        {
+            it->MarkToBeRemoved();
+            
+            //If the car leaves the road with
+            if(it->Color == it->CurrentLane->Color)
+            {
+                AddExtraTime();
+            }
+            Log("Car left the road end");
+        }
+        else if(it->IsToBeRemoved())
+        {
+            int id = it->getID();
+            _vehicles.erase(it);
+            _enginePlugin->PostRemoveVehicle(id);
+            Log("Car was removed");
+        }
+        
+        
+        //Check collision with all vehicles
+        vector<CVehicle>::iterator otherVehicleIterator = _vehicles.begin();
+        for(;otherVehicleIterator != _vehicles.end();otherVehicleIterator++)
+        {
+            if(it->getID() == otherVehicleIterator->getID())
+                continue;
+            
+            if(it->IsCollision(&*otherVehicleIterator))
+            {
+                this->GameOver(GameOverReason::CRASH);
+                break;
+            }
+        }
+        
+        _enginePlugin->PostUpdateVehicle(&*it);
+    }
+    
+    
+    if(_remainingTime < 0)
+    {
+        this->GameOver(GameOverReason::TIME);
     }
     
     return _vehicles;
 }
 
-void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
+/*void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
 {
     vehicle->Position->setX(x);
     vehicle->Position->setY(y);
-}
+}*/
 
 CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime)
 {
@@ -87,10 +191,10 @@ CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTim
     
     float lateralSpeed = 200;
     
-    /*if(vehicle->GoalLane != nullptr) {
-        CPosition* goalLanePosition = vehicle->GoalLane->Position;
-        float deltaX = abs(goalLanePosition->getX() - position->getX());
-        
+    if(vehicle->CurrentLane != nullptr) {
+        CPosition* goalLanePosition = vehicle->CurrentLane->Position;
+        float deltaX = std::abs(goalLanePosition->getX() - position->getX());
+    
         if(deltaX < 3)
             position->setX(goalLanePosition->getX());
         
@@ -98,7 +202,10 @@ CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTim
             position->setX(position->getX() - (lateralSpeed * deltaTime));
         else if(position->getX() < goalLanePosition->getX())
             position->setX(position->getX() + (lateralSpeed * deltaTime));
-    }*/
+        
+        
+        Log("Engine - Goal lane position x: " + to_string(goalLanePosition->getX()) + ", y: " + to_string(goalLanePosition->getY()));
+    }
 
     
     return position;
@@ -113,22 +220,25 @@ CVehicle* CEngine::GetNewVehicle(CLane* starterLane)
 {
     int type = random() % 3;
     string* carType;
-    
+    Color color;
     switch(type) {
         case 0:
             carType = new string("GreenCar");
+            color = Color::GREEN;
             break;
         case 1:
             carType = new string("RedCar");
+            color = Color::RED;
             break;
         case 2:
             carType = new string("BlueCar");
+            color = Color::BLUE;
             break;
     }
     
-    CVehicle* vehicle = new CVehicle(this->getNextCarId(), carType, type);
+    CVehicle* vehicle = new CVehicle(this->getNextCarId(), color);
     
-    vehicle->GoalLane = starterLane;
+    vehicle->CurrentLane = starterLane;
     vehicle->Position->setX(starterLane->Position->getX());
     vehicle->Position->setY(480);
     
@@ -136,8 +246,13 @@ CVehicle* CEngine::GetNewVehicle(CLane* starterLane)
     
     //logFunction(new string("delegate writing........."));
     //Log("testing");
-    Log("Starting new car in lane " + to_string(vehicle->GoalLane->getID()));
+    Log("Starting new car in lane " + to_string(vehicle->CurrentLane->getID()));
     Log("Starting cordinates x: " + to_string(vehicle->Position->getX()) + " y: " + to_string(vehicle->Position->getY()));
+    
+    //Test
+    _enginePlugin->PostNewVehicle(vehicle);
+    
+    
     return vehicle;
 }
 
@@ -177,14 +292,30 @@ void CEngine::RemoveVehicle(CVehicle* vehicleToRemove)
             break;
         }
     }
+}
+
+void CEngine::GameOver(GameOverReason reason)
+{
+    _gameOver = true;
+    _enginePlugin->GameOver(reason);
+}
+
+bool CEngine::IsGameOver()
+{
+    return _gameOver;
+}
+
+void CEngine::StartGame()
+{
     
-    /*for(int i = 0; i < _vehicles->size(); i++)
-    {
-        CVehicle currentVehicle = _vehicles->at(i);
-        
-        if(vehicleToRemove->getID() == currentVehicle.getID())
-        {
-            break;
-        }
-    }*/
+}
+
+void CEngine::AddExtraTime()
+{
+    _remainingTime = _remainingTime + 2;
+}
+
+float CEngine::GetRemainingTime()
+{
+    return _remainingTime;
 }

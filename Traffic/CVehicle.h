@@ -13,6 +13,8 @@
 #include <string>
 #include "CPosition.h"
 #include "CLane.h"
+#include "CSize.h"
+#include "SharedEnum.h"
 
 using namespace std;
 
@@ -20,18 +22,37 @@ class CVehicle{
     
 private:
     int _id;
-    string* _carType;
-    int _type;
+    //string* _carType;
+    //int _type;
     float _speed;
-    
+    bool _toBeRemoved = false;
 public:
-    CVehicle(int newId, string* newCarType, int type);
+    CVehicle(int newId, Color color);//string* newCarType, int type);
+    Color Color;
+    //Getters
     int getID();
-    string* getCarType();
-    int getType();
-    CPosition* Position;
+    /*string* getCarType();
+    int getType();*/
     float getSpeed();
-    CLane* GoalLane;
+    
+    //External objects
+    CPosition* Position;
+    CSize* Size;
+    CLane* CurrentLane;
+    
+    //Methods
+    bool EndOfTheRoad();
+    bool IsCollision(CVehicle* otherVehicle);
+    void Move(float x, float y);
+    
+    //Cordinates methods
+    float GetX1();
+    float GetX2();
+    float GetY1();
+    float GetY2();
+    
+    bool IsToBeRemoved();
+    void MarkToBeRemoved();
 };
 
 #endif /* defined(__Traffic__CVehicle__) */

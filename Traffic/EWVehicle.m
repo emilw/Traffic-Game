@@ -11,7 +11,7 @@
 
 @implementation EWVehicle
 
-@synthesize speed, slowed, goalLane, controller, Id;
+@synthesize speed, slowed, goalLane, controller, Id, ToBeRemoved;
 /*- (id)initWithFrame:(CGRect)frame
 {
     UIImage* loadedImage = [UIImage imageNamed: @"RedCar.png"];
@@ -110,7 +110,7 @@
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch* touch = [touches anyObject];
     //self.center = [touch locationInView:[self superview]];
-    [controller vehicleMoved: self];
+    NSLog(@"Vehicle %d moved", self.Id);
     
     EWLane* lane = [controller laneAtPoint:[touch locationInView:self.superview]];
     
@@ -119,6 +119,8 @@
         
         NSLog(@"In a lane");
     }
+    
+    [controller vehicleMoved: self];
 }
 
 /*-(void)dealloc{

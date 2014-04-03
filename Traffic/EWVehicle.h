@@ -18,6 +18,7 @@
     BOOL slowed;
     NSInteger goalTag;
     int Id;
+    BOOL ToBeRemoved;
     
     EWLane* goalLane;
 }
@@ -34,6 +35,8 @@
 
 @property (nonatomic, retain) EWLane* goalLane;
 @property (nonatomic) NSInteger goalTag;
+
+@property (nonatomic) BOOL ToBeRemoved;
 
 @property(nonatomic) int Id;
 

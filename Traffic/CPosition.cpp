@@ -8,21 +8,21 @@
 
 #include "CPosition.h"
 
-int CPosition::getX()
+float CPosition::getX()
 {
     return x;
 }
 
-int CPosition::getY(){
+float CPosition::getY(){
     return y;
 }
 
-void CPosition::setX(int value)
+void CPosition::setX(float value)
 {
     x = value;
 }
 
-void CPosition::setY(int value)
+void CPosition::setY(float value)
 {
     y = value;
 }

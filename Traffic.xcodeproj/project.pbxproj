@@ -41,6 +41,8 @@
 		20E8EFF518E1CB9F004361D5 /* CVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFF318E1CB9F004361D5 /* CVehicle.cpp */; };
 		20E8EFF818E30DFF004361D5 /* CLane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFF618E30DFF004361D5 /* CLane.cpp */; };
 		20E8EFFB18E45FBE004361D5 /* CPosition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFF918E45FBE004361D5 /* CPosition.cpp */; };
+		20E8EFFF18E8482B004361D5 /* CSize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFFD18E8482B004361D5 /* CSize.cpp */; };
+		20E8F00218E98ECC004361D5 /* CEnginePlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,7 @@
 		201A039618CE077C008844C2 /* EWTrafficController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EWTrafficController.m; sourceTree = "<group>"; };
 		201A039918CE530F008844C2 /* EWLane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EWLane.h; sourceTree = "<group>"; };
 		201A039A18CE530F008844C2 /* EWLane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EWLane.m; sourceTree = "<group>"; };
+		205C676B18ED7C730062A6CB /* SharedEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedEnum.h; sourceTree = "<group>"; };
 		2083AAB518D4B13400E20919 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2083AAB718D4B1C400E20919 /* MusicTrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusicTrack.mp3; sourceTree = "<group>"; };
 		2083AAB918D4B8D100E20919 /* MusicTrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusicTrack.mp3; sourceTree = "<group>"; };
@@ -107,6 +110,10 @@
 		20E8EFF718E30DFF004361D5 /* CLane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLane.h; sourceTree = "<group>"; };
 		20E8EFF918E45FBE004361D5 /* CPosition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPosition.cpp; sourceTree = "<group>"; };
 		20E8EFFA18E45FBE004361D5 /* CPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPosition.h; sourceTree = "<group>"; };
+		20E8EFFD18E8482B004361D5 /* CSize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSize.cpp; sourceTree = "<group>"; };
+		20E8EFFE18E8482B004361D5 /* CSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSize.h; sourceTree = "<group>"; };
+		20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEnginePlugin.cpp; sourceTree = "<group>"; };
+		20E8F00118E98ECC004361D5 /* CEnginePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEnginePlugin.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +262,11 @@
 				20E8EFF718E30DFF004361D5 /* CLane.h */,
 				20E8EFF918E45FBE004361D5 /* CPosition.cpp */,
 				20E8EFFA18E45FBE004361D5 /* CPosition.h */,
+				20E8EFFD18E8482B004361D5 /* CSize.cpp */,
+				20E8EFFE18E8482B004361D5 /* CSize.h */,
+				20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */,
+				20E8F00118E98ECC004361D5 /* CEnginePlugin.h */,
+				205C676B18ED7C730062A6CB /* SharedEnum.h */,
 			);
 			name = EngineCpp;
 			sourceTree = "<group>";
@@ -361,11 +373,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20E8F00218E98ECC004361D5 /* CEnginePlugin.cpp in Sources */,
 				201A035418C62674008844C2 /* EWAppDelegate.m in Sources */,
 				201A038618C7ABFE008844C2 /* EWTrafficViewController.m in Sources */,
 				201A038C18C90D4F008844C2 /* EWHighScore.m in Sources */,
 				201A039118CCEE03008844C2 /* CEngine.cpp in Sources */,
 				201A039418CD0A52008844C2 /* CEngineBridge.mm in Sources */,
+				20E8EFFF18E8482B004361D5 /* CSize.cpp in Sources */,
 				201A038918C8F178008844C2 /* EWVehicle.m in Sources */,
 				20E8EFFB18E45FBE004361D5 /* CPosition.cpp in Sources */,
 				201A035718C62674008844C2 /* EWRootViewController.m in Sources */,

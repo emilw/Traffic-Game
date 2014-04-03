@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "EWTrafficController.h";
+#import "EWTrafficController.h"//;
 //@class EWTrafficController;
 
 @interface EWTrafficViewController : UIViewController

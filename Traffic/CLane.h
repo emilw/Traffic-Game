@@ -11,12 +11,15 @@
 
 #include <iostream>
 #include "CPosition.h"
+#include "SharedEnum.h"
 class CLane
 {
 public:
-    CLane(int id) {_id = id; Position = new CPosition();};
+    CLane(int id, Color color);
     int getID();
     CPosition* Position;
+    const int ENDOFTHELANE = -10;
+    Color Color;
 private:
     int _id;
     

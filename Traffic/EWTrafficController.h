@@ -44,4 +44,8 @@
 -(BOOL) isPaused;
 -(EWLane*)laneAtPoint: (CGPoint)point;
 -(void) vehicleMoved: (EWVehicle*) vehicle;
+-(void) vehicleCrashed;
+-(void) updateRemainingTime: (float) remainingTime;
+-(void) addVehicleView: (EWVehicle*) vehicle;
+-(void) gameOver;
 @end

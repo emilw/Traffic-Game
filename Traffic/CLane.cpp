@@ -8,6 +8,13 @@
 
 #include "CLane.h"
 
+CLane::CLane(int id, enum Color color)
+{
+    _id = id;
+    Position = new CPosition();
+    Color = color;
+}
+
 int CLane::getID()
 {
     return _id;

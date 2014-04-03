@@ -14,14 +14,14 @@
 class CPosition
 {
 private:
-    int x;
-    int y;
+    float x;
+    float y;
 public:
     CPosition(int x = 0, int y = 0) { x = x; y = y;};
-    int getX();
-    int getY();
-    void setY(int value);
-    void setX(int value);
+    float getX();
+    float getY();
+    void setY(float value);
+    void setX(float value);
 };
 
 #endif /* defined(__Traffic__CPosition__) */
