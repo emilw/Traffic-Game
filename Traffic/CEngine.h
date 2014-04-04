@@ -84,6 +84,12 @@ private:
     //Internal engine methods
     float GetUpdatedDeltaTimeInSeconds();
     void AddExtraTime();
+    
+    //New comment
+    
+    //Another comment
+    
+    //Change in branch
 
 };
 
