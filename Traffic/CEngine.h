@@ -84,13 +84,6 @@ private:
     //Internal engine methods
     float GetUpdatedDeltaTimeInSeconds();
     void AddExtraTime();
-    
-    //New comment
-    
-    //Another comment
-    
-    //Change in branch
-
 };
 
 #endif /* defined(__Traffic__CEngine__) */
