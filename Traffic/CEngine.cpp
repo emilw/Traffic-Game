@@ -20,7 +20,6 @@ CLane* CEngine::GetNewLane(Color color)
 #warning Should not be hard coded sizes, should be height according to the screen height and screen width / 3
     CLane* newLane = new CLane(this->getNextLaneId(), color, 60, 568);
     _lanes.push_back(*newLane);
-    
     Log("Lane with Id: " + to_string(newLane->getID()));
     
     return newLane;
@@ -118,20 +117,12 @@ float CEngine::GetTotalTime()
 
 vector<CVehicle> CEngine::GetAllVehicles()
 {
+    
     double deltaTime = this->GetUpdatedDeltaTimeInSeconds();
     
     _totalTime = _totalTime + deltaTime;
     
     printf("delta time: %f \n", deltaTime);
-    
-    //float deltaT = 0;
-    
-    /*if(_lastTimestamp != 0)
-    {
-        deltaT = timeStampNow - _lastTimestamp;
-        
-        printf("%f timestampnow, last timestamp %f, delta %f", timeStampNow, _lastTimestamp, deltaT);
-    }*/
     
     _remainingTime = _remainingTime - deltaTime;
     
@@ -140,50 +131,63 @@ vector<CVehicle> CEngine::GetAllVehicles()
     
     CPosition* updatedPosition;
     
+    
+    _vehicleArrayLock.lock();
     for(;it != _vehicles.end(); it++)
     {
-        _enginePlugin->PreUpdateVehicle(&*it);
-        
-        updatedPosition = GetVehiclesCurrentPosition(&*it, deltaTime);
-        it->Position = updatedPosition;
-        
-        //Mark the vehicle to be removed
-        if(!it->IsToBeRemoved() && it->EndOfTheRoad())
+        //Due to the screen updating thread is the main thread, we need to call the screen from the main thread and not the thread creating new vehicles
+        if(it->IsNew())
         {
-            it->MarkToBeRemoved();
-            
-            //If the car leaves the road with
-            if(it->Color == it->CurrentLane->Color)
+            _enginePlugin->PostNewVehicle(&*it);
+            it->TurnOfIsNew();
+        }
+        else
+        {
+        
+            _enginePlugin->PreUpdateVehicle(&*it);
+            updatedPosition = GetVehiclesCurrentPosition(&*it, deltaTime);
+            it->Position = updatedPosition;
+        
+            //Mark the vehicle to be removed
+            if(!it->IsToBeRemoved() && it->EndOfTheRoad())
             {
-                AddExtraTime();
-            }
-            Log("Car left the road end");
-        }
-        else if(it->IsToBeRemoved())
-        {
-            int id = it->getID();
-            _vehicles.erase(it);
-            _enginePlugin->PostRemoveVehicle(id);
-            Log("Car was removed");
-        }
-        
-        
-        //Check collision with all vehicles
-        vector<CVehicle>::iterator otherVehicleIterator = _vehicles.begin();
-        for(;otherVehicleIterator != _vehicles.end();otherVehicleIterator++)
-        {
-            if(it->getID() == otherVehicleIterator->getID())
-                continue;
+                it->MarkToBeRemoved();
             
-            if(it->IsCollision(&*otherVehicleIterator))
-            {
-                this->GameOver(GameOverReason::CRASH);
-                break;
+                //If the car leaves the road with
+                if(it->Color == it->CurrentLane->Color)
+                {
+                    AddExtraTime();
+                }
+                Log("Car left the road end");
             }
-        }
+            else if(it->IsToBeRemoved())
+            {
+                int id = it->getID();
+                _vehicles.erase(it);
+                _enginePlugin->PostRemoveVehicle(id);
+                Log("Car was removed");
+            }
         
-        _enginePlugin->PostUpdateVehicle(&*it);
+        
+            //Check collision with all vehicles
+            vector<CVehicle>::iterator otherVehicleIterator = _vehicles.begin();
+            for(;otherVehicleIterator != _vehicles.end();otherVehicleIterator++)
+            {
+                if(it->getID() == otherVehicleIterator->getID())
+                    continue;
+            
+                if(it->IsCollision(&*otherVehicleIterator))
+                {
+                    this->GameOver(GameOverReason::CRASH);
+                    break;
+                }
+            }
+        
+            _enginePlugin->PostUpdateVehicle(&*it);
+        }
     }
+    
+    _vehicleArrayLock.unlock();
     
     
     if(_remainingTime < 0)
@@ -191,15 +195,17 @@ vector<CVehicle> CEngine::GetAllVehicles()
         this->GameOver(GameOverReason::TIME);
     }
     
+    
     return _vehicles;
 }
 
 void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
 {
     vehicle->Move(x, y);
-    
+ 
+    _vehicleArrayLock.lock();
     vector<CLane>::iterator it = _lanes.begin();
-    
+ 
     for(;it != _lanes.end(); it++)
     {
         if(it->IsInFrame(x,y))
@@ -209,6 +215,8 @@ void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
         }
         
     }
+    
+    _vehicleArrayLock.unlock();
 }
 
 CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime)
@@ -247,25 +255,11 @@ void CEngine::AddVehicle(CVehicle* vehicle)
     _vehicles.push_back(*vehicle);
 }
 
-CVehicle* CEngine::GetNewVehicle(CLane* starterLane)
+void CEngine::StartNewVehicle(CLane* starterLane)
 {
-    int type = random() % 3;
-    string* carType;
-    Color color;
-    switch(type) {
-        case 0:
-            carType = new string("GreenCar");
-            color = Color::GREEN;
-            break;
-        case 1:
-            carType = new string("RedCar");
-            color = Color::RED;
-            break;
-        case 2:
-            carType = new string("BlueCar");
-            color = Color::BLUE;
-            break;
-    }
+    string carType;
+    
+    Color color = this->getRandomColor();
     
     CVehicle* vehicle = new CVehicle(this->getNextCarId(), color, 58, 65);
     
@@ -273,18 +267,14 @@ CVehicle* CEngine::GetNewVehicle(CLane* starterLane)
     vehicle->Position->setX(starterLane->Position->getX());
     vehicle->Position->setY(480);
     
-    this->AddVehicle(vehicle);
-    
-    //logFunction(new string("delegate writing........."));
-    //Log("testing");
     Log("Starting new car in lane " + to_string(vehicle->CurrentLane->getID()));
     Log("Starting cordinates x: " + to_string(vehicle->Position->getX()) + " y: " + to_string(vehicle->Position->getY()));
     
-    //Test
+    _vehicleArrayLock.lock();
+    this->AddVehicle(vehicle);
+    
     _enginePlugin->PostNewVehicle(vehicle);
-    
-    
-    return vehicle;
+    _vehicleArrayLock.unlock();
 }
 
 void CEngine::Log(string message)
@@ -295,20 +285,19 @@ void CEngine::Log(string message)
         cout << "Internal logging: " << message << "\n";
 }
 
-void CEngine::ExecuteMethod(void (*func)())
-{
-    func();
-}
-
 int CEngine::getNextCarId()
 {
+    _vehicleCounterLock.lock();
     _carIdCounter = _carIdCounter + 1;
+    _vehicleCounterLock.unlock();
     return _carIdCounter;
 }
 
 int CEngine::getNextLaneId()
 {
+    _laneCounterLock.lock();
     _laneIdCounter = _laneIdCounter + 1;
+    _laneCounterLock.unlock();
     return _laneIdCounter;
 }
 
@@ -325,22 +314,6 @@ void CEngine::RemoveVehicle(CVehicle* vehicleToRemove)
     }
 }
 
-void CEngine::GameOver(GameOverReason reason)
-{
-    _gameOver = true;
-    _enginePlugin->GameOver(reason);
-}
-
-bool CEngine::IsGameOver()
-{
-    return _gameOver;
-}
-
-void CEngine::StartGame()
-{
-    
-}
-
 void CEngine::AddExtraTime()
 {
     _remainingTime = _remainingTime + 2;
@@ -351,7 +324,98 @@ float CEngine::GetRemainingTime()
     return _remainingTime;
 }
 
+CLane* CEngine::GetRandomLane()
+{
+    Color color = getRandomColor();
+    
+    vector<CLane>::iterator it = _lanes.begin();
+    for(;it != _lanes.end(); it++)
+    {
+        if(it->Color == color)
+            return &*it;
+    }
+    
+    return nullptr;
+}
+
+Color CEngine::getRandomColor()
+{
+    int type = random() % 3;
+    Color color;
+    switch(type) {
+        case 0:
+            color = Color::GREEN;
+            break;
+        case 1:
+            color = Color::RED;
+            break;
+        case 2:
+            color = Color::BLUE;
+            break;
+    }
+    
+    return color;
+}
+
+void CEngine::CarStarter(CEngine* engine)
+{
+    //int i = 0;
+    
+    int randomStartIntervall = 0;
+    while(true)
+    {
+        if(engine->IsGameOver() || engine->IsPaused())
+            break;
+        
+        CLane* lane = engine->GetRandomLane();
+        engine->StartNewVehicle(lane);
+        
+        randomStartIntervall = random() % 1000+ 600;
+        std::chrono::milliseconds dura(randomStartIntervall);
+        std::this_thread::sleep_for(dura);
+    }
+}
+
+void CEngine::GameOver(GameOverReason reason)
+{
+    _gameOver = true;
+    //if(_carStarter->joinable())
+    //_carStarter->join();
+    //_carStarter->~thread();
+    _enginePlugin->GameOver(reason);
+}
+
+bool CEngine::IsGameOver()
+{
+    return _gameOver;
+}
+
+void Run()
+{
+    cout << "Dude";
+}
+
+void CEngine::StartGame()
+{
+    //thread first (CarStarter);
+    
+    _carStarter = new thread(CarStarter, this);
+    //_carStarter (CarStarter);
+}
+
 void CEngine::Resume()
 {
     _lastTimestampMilliseconds = GetTimestamp();
+    _paused = false;
+    _carStarter = new thread(CarStarter, this);
+}
+
+void CEngine::Pause()
+{
+    _paused = true;
+}
+
+bool CEngine::IsPaused()
+{
+    return _paused;
 }

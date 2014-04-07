@@ -16,11 +16,6 @@
 {
     CADisplayLink* displayLink;
     
-    NSMutableArray* vehicles;
-    NSMutableArray* vehiclesToRemove;
-
-    NSMutableArray* lanes;
-    
     SystemSoundID screechSoundID;
     SystemSoundID crashSoundID;
     
@@ -35,12 +30,14 @@
 
 -(void)startGame;
 -(void)registerLane:(EWLane*) lane;
--(void) startCarFromLane: (EWLane*) starter;
+
 -(void) togglePause;
 -(BOOL) isPaused;
 -(void) vehicleMoved: (EWVehicle*) vehicle point: (CGPoint) point;
 -(void) vehicleCrashed;
+
 -(void) updateRemainingTime: (float) remainingTime;
 -(void) addVehicleView: (EWVehicle*) vehicle;
+
 -(void) gameOver;
 @end

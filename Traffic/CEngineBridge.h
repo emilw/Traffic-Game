@@ -7,9 +7,6 @@
 //
 
 #import "EWVehicle.h"
-//#import "EWTrafficController.h"
-//#import "CEnginePlugin.h"
-//#import "CEnginePlugin.h"
 
 @interface CEngineBridge: NSObject
 {
@@ -18,26 +15,26 @@
     EWTrafficController* _controller;
 }
 
-NSString* getValue();
 -(id)initWithController: (EWTrafficController*) controller;
--(NSString*)getValue;
 -(EWLane*)SyncLaneWithEngine: (EWLane*) lane;
 -(void)UpdatePosition: (int) id;
--(void)WriteSomething;
-//-(void)UpdatePosition: (NSMutableArray*) vehicles deltaTimes: (CGFloat) deltaTime;
 
 //To keep
 -(void)StartGame;
--(EWVehicle*)GetNewVehicle: (EWLane*) lane;
 -(void)Update;
 -(void)MoveVehicle: (EWVehicle*) vehicle to: (CGPoint) point;
+
+-(void) GetNewVehicle: (int) Id carImage: (const char*) carImage x: (float) x y: (float) y;
+-(void) RemoveVehicle: (int) id;
+
+-(void)UpdateRemainingTime: (float) timeLeft;
+-(float) GetTotalTime;
+
 -(BOOL)IsGameOver;
 -(void)GameOverVehicleCrashed;
 -(void)GameOverTimeIsUp;
--(void)UpdateRemainingTime: (float) timeLeft;
--(void) GetNewVehicle;
--(void) RemoveVehicle: (int) id;
--(float) GetTotalTime;
+-(BOOL) IsPaused;
+-(void) Pause;
 -(void) Resume;
 
 @property NSMutableArray* Vehicles;

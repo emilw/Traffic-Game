@@ -12,7 +12,6 @@
 
 @interface EWLane : UIView
 {
-    NSTimer* carStartTimer;
     EWTrafficController* controller;
     int Id;
 }
@@ -20,7 +19,5 @@
 @property (nonatomic, retain) IBOutlet EWTrafficController* controller;
 @property (nonatomic) int Id;
 
--(void)start;
--(void)stop;
 
 @end

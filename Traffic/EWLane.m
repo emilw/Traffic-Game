@@ -17,29 +17,7 @@
 
 -(void)awakeFromNib {
     [controller registerLane:self];
-    srandom(time(NULL));
-    [self start];
-}
-
--(void) start {
-    //Original
-    //long newStartTime = random() % 200 + (self.tag*100);
-    long newStartTime = random() % 200;
-    
-    carStartTimer = [NSTimer scheduledTimerWithTimeInterval:newStartTime/1000.0 target: self selector:@selector(startTimerFired:) userInfo:nil repeats:YES];
-    //[controller startCarFromLane:self];
-}
-
-- (void) startTimerFired: (NSTimer*)timer{
-    long newStartTime = random() % 1500 + 1000;
-    [timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:newStartTime/1000.0]];
-    
-    [controller startCarFromLane:self];
-}
-
--(void)stop {
-    [carStartTimer invalidate];
-    carStartTimer = nil;
+    //srandom(time(NULL));
 }
 
 @end

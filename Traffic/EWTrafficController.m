@@ -19,9 +19,6 @@
 -(void)awakeFromNib{
     engine = [CEngineBridge alloc];
     engine = [engine initWithController: self];
-    vehicles = [NSMutableArray arrayWithCapacity:10];
-    vehiclesToRemove = [NSMutableArray arrayWithCapacity:10];
-    lanes = [NSMutableArray arrayWithCapacity:3];
 }
 
 -(void)vehicleMoved: (EWVehicle*) vehicle point: (CGPoint)point{
@@ -44,8 +41,7 @@
 
 -(void)registerLane:(EWLane*)lane
 {
-    lane = [engine SyncLaneWithEngine:lane];
-    [lanes addObject:(lane)];
+    [engine SyncLaneWithEngine:lane];
 }
 
 -(void)startGame{
@@ -77,7 +73,8 @@
 }
 
 -(BOOL) isPaused{
-    return displayLink.paused;
+    return [engine IsPaused];
+    //return displayLink.paused;
 }
 
 -(void)setTotalScore: (float) score{
@@ -90,40 +87,16 @@
     
     if(displayLink.paused)
     {
-        for(EWVehicle* v in vehicles)
-        {
-            v.userInteractionEnabled = NO;
-        }
+        [engine Pause];
         
-        for(EWLane* l in lanes)
-        {
-            [l stop];
-        }
         [self setTotalScore:[engine GetTotalTime]];
     }
     else
     {
-        for(EWVehicle* v in vehicles)
-        {
-            v.userInteractionEnabled = YES;
-        }
-        
-        for(EWLane* l in lanes)
-        {
-            [l start];
-        }
-        
         [engine Resume];
-        
-        //lastTimestamp = CACurrentMediaTime();
     }
     
     NSLog(@"display link state is changed to: %i", displayLink.paused);
-}
-
--(void) startCarFromLane: (EWLane*)starter {
-#warning Let the engine select the lane etc. This method should probably removed fully
-    EWVehicle* v = [engine GetNewVehicle: starter];
 }
 
 -(void) addVehicleView:(EWVehicle *)vehicle

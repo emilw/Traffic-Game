@@ -31,7 +31,7 @@ void CEnginePlugin::GameOver(GameOverReason reason)
 
 void CEnginePlugin::PostNewVehicle(CVehicle *vehicle)
 {
-    cout << "Default PostNewCar call, should be overloaded";
+    cout << "Default PostNewVehicle call, should be overloaded.";
 }
 
 void CEnginePlugin::PostRemoveVehicle(int id)

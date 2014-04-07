@@ -17,17 +17,17 @@
 #import "EWTrafficController.h"
 #import "SharedEnum.h"
 
-
+//Struct to wrap the engine, due to lazyness the CEnginePlugin is used as a base here allso to avoid adding new files
 struct CEngineBridgeImpl : CEngine, CEnginePlugin
 {
+    NSMutableArray* vehicles;
+    id self;
+    
     CEngineBridgeImpl(void (*printOutFunc) (string), void* fascadeObject): CEngine(printOutFunc, this), CEnginePlugin(fascadeObject)
     {
         self = (__bridge id)_fascadeObject;
     };
     
-    NSMutableArray* vehicles;
-    id self;
-    //CEngineBridgeImpl(): CEngine(){};
     void PreUpdateVehicle(CVehicle *vehicle)
     {
         //Nothing to do before the vehicle is being updated
@@ -35,15 +35,12 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
     
     void PostUpdateVehicle(CVehicle* vehicle)
     {
-        //id self = (__bridge id)_fascadeObject;
         [self UpdatePosition:vehicle->getID()];
-        
         [self UpdateRemainingTime: this->GetRemainingTime()];
     }
     
     void GameOver(GameOverReason reason)
     {
-        //[(__bridge id)_fascadeObject ItsGameOver];
         if(reason == GameOverReason::CRASH)
             [self GameOverVehicleCrashed];
         else
@@ -52,7 +49,7 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
     
     void PostNewVehicle(CVehicle* vehicle)
     {
-        //[self NewVe]
+        [self GetNewVehicle:vehicle->getID() carImage:vehicle->getCarType().c_str() x:vehicle->Position->getX() y:vehicle->Position->getY()];
     }
     
     virtual void PostRemoveVehicle(int id)
@@ -64,12 +61,66 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
 
 @implementation CEngineBridge
 
-/*void CEngineBridgeImpl::PreUpdateVehicle(CVehicle *vehicle)
+#pragma region Callback_Methods
+//Callbacks from extension methods
+-(void)UpdatePosition:(int)id
 {
-    cout << "Dude from wrapper";
-}*/
+    
+    NSLog(@"Updating position for vehicle with id: %d", id);
+    
+    CVehicle* internalVehicle = _cEngine->GetVehicle(id);
+    
+    EWVehicle* vehicle = [_vehicleDictionary objectForKey:@(id)];
+    
+    vehicle.center = GetCGPointFromPosition(internalVehicle->Position);
+}
+
+-(void) GetNewVehicle:(int)Id carImage:(const char*)carImage x:(float)x y:(float)y
+{
+    
+    NSLog(@"In getNew vehicle");
+    EWVehicle* v = [[EWVehicle alloc] initWithName: getNSString(carImage) id:Id];
+    
+    CGPoint position;
+    position.x = x;
+    position.y = y;
+    v.center = position;
+    
+    [_controller addVehicleView:v];
+    
+    v.controller = _controller;
+    
+    [_vehicleDictionary setObject:v forKey:@(v.Id)];
+}
+
+-(void) GameOverVehicleCrashed
+{
+    [_controller vehicleCrashed];
+}
+
+-(void) GameOverTimeIsUp
+{
+    [_controller gameOver];
+}
+
+-(void) RemoveVehicle:(int)id
+{
+    EWVehicle* vehicle = [_vehicleDictionary objectForKey:@(id)];
+    [vehicle removeFromSuperview];
+    
+    [_vehicleDictionary removeObjectForKey:@(id)];
+}
+
+-(void) UpdateRemainingTime:(float)timeLeft
+{
+    [_controller updateRemainingTime:timeLeft];
+}
+
+#pragma endregion Callback_Methods
 
 
+#pragma region API_Methods
+//Call methods from controllers
 -(void) StartGame
 {
     _cEngine->StartGame();
@@ -79,38 +130,11 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
 {
     CLane* lane = _cEngine->GetNewLane((Color)inputLane.tag);
     inputLane.Id = lane->getID();
-    NSLog(@"Cocoa Lane width: %f, height: %f, x: %f, y:%f", inputLane.frame.size.width, inputLane.frame.size.height, inputLane.center.x, inputLane.center.y);
     lane->Position->setX(inputLane.center.x);
     lane->Position->setY(inputLane.center.y);
     
-    NSLog(@"Engine Lane width: %f, height: %f, x: %f, y: %f");
-    
     return inputLane;
 }
-
-#warning This method is not used and should be removed, everything is done in Update
-/*-(void) UpdatePosition:(NSMutableArray *)vehicles deltaTimes: (CGFloat) deltaTime
-{
-    vector<CVehicle> internalVehicles = _cEngine->GetAllVehicles();
-    
-    vector<CVehicle>::iterator it = internalVehicles.begin();
-    
-    for(;it != internalVehicles.end(); it++)
-    {
-        //bool found = true;
-        for(EWVehicle* vehicle in vehicles)
-        {
-            if(vehicle.Id == it->getID())
-            {
-                
-                vehicle.ToBeRemoved = it->IsToBeRemoved();
-                vehicle.center = GetCGPointFromPosition(it->Position);
-                break;
-            }
-        }
-    }
-    
-}*/
 
 CGPoint GetCGPointFromPosition(CPosition* cPosition)
 {
@@ -132,80 +156,6 @@ CGPoint GetCGPointFromPosition(CPosition* cPosition)
     _cEngine->GetAllVehicles();
 }
 
--(void)UpdatePosition:(int)id
-{
-    
-    NSLog(@"Updating position for vehicle with id: %d", id);
-    
-    CVehicle* internalVehicle = _cEngine->GetVehicle(id);
-    
-    EWVehicle* vehicle = [_vehicleDictionary objectForKey:@(id)];
-    
-    vehicle.center = GetCGPointFromPosition(internalVehicle->Position);
-}
-
--(void) GetNewVehicle
-{
-}
-
--(EWVehicle*) GetNewVehicle: (EWLane*) lane
-{
-    CLane* internalLane = _cEngine->GetLane(lane.Id);
-    CVehicle* vehicle = _cEngine->GetNewVehicle(internalLane);
-    
-    string carImage;
-    switch(vehicle->Color) {
-        case GREEN:
-            carImage = "GreenCar";
-            break;
-        case 1:
-            carImage = "RedCar";
-            break;
-        case 2:
-            carImage = "BlueCar";
-            break;
-    }
-
-    
-    
-    EWVehicle* v = [[EWVehicle alloc]
-                    initWithName: getNSString(carImage.c_str())
-                    id:vehicle->getID()];
-    
-    //v.goalTag = vehicle->getType();
-    //v.goalLane = lane;
-    
-    NSLog(@"Size height: %g, width: %g", v.frame.size.height, v.frame.size.width);
-    
-    CGPoint position;
-    position.x = vehicle->Position->getX();
-    position.y = vehicle->Position->getY();
-    v.center = position;
-    
-    [_controller addVehicleView:v];
-    //[self registerVehicle:v];
-    
-    v.controller = _controller;
-    
-    [_vehicleDictionary setObject:v forKey:@(v.Id)];
-    
-    return v;
-}
-
-EWLane* mapFromCLane(CLane* lane, EWLane* toLane)
-{
-    return toLane;
-}
-
-void writeSomething()
-{
-    NSLog(@"NSLog: Testing the method");
-}
-
--(void)WriteSomething {
-    NSLog(@"Objective C method from C++");
-}
-
 - (id) initWithController:(EWTrafficController *)controller
 {
     _controller = controller;
@@ -221,11 +171,46 @@ void logFunction(string message)
     NSLog(getNSString(&message));
 }
 
--(NSString*)getValue
+-(BOOL) IsGameOver
 {
-    return @"Dude from C++";
+    return _cEngine->IsGameOver();
 }
 
+-(float) GetTotalTime
+{
+    return _cEngine->GetTotalTime();
+}
+
+-(void) Pause
+{
+    _cEngine->Pause();
+    
+    for(id key in _vehicleDictionary)
+    {
+        EWVehicle* v = [_vehicleDictionary objectForKey:key];
+        v.userInteractionEnabled = NO;
+    }
+}
+
+-(BOOL) IsPaused
+{
+    return _cEngine->IsPaused();
+}
+
+-(void) Resume
+{
+    _cEngine->Resume();
+    
+    for(id key in _vehicleDictionary)
+    {
+        EWVehicle* v = [_vehicleDictionary objectForKey:key];
+        v.userInteractionEnabled = YES;
+    }
+}
+
+#pragma endregion API_Methods
+
+#pragma region Helpers
 NSString* getNSString(const char* value)
 {
     NSString* result = [[NSString alloc] initWithUTF8String:value];
@@ -237,42 +222,9 @@ NSString* getNSString(string* value)
     return getNSString(value->c_str());
 }
 
--(void) GameOverVehicleCrashed
-{
-    [_controller vehicleCrashed];
-}
+#pragma endregion Helpers
 
--(void) GameOverTimeIsUp
-{
-    [_controller gameOver];
-}
 
--(BOOL) IsGameOver
-{
-    return _cEngine->IsGameOver();
-}
-
--(void) UpdateRemainingTime:(float)timeLeft
-{
-    [_controller updateRemainingTime:timeLeft];
-}
-
--(void) RemoveVehicle:(int)id
-{
-    EWVehicle* vehicle = [_vehicleDictionary objectForKey:@(id)];
-    [vehicle removeFromSuperview];
-    
-    [_vehicleDictionary removeObjectForKey:@(id)];
-}
-
--(float) GetTotalTime
-{
-    return _cEngine->GetTotalTime();
-}
--(void) Resume
-{
-    _cEngine->Resume();
-}
 
 @end
 

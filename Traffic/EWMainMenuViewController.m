@@ -75,14 +75,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-
-    CEngineBridge* bridge = [CEngineBridge new];
-    
-    NSString* value = [bridge getValue];
-    
-    self.dataLabel.text = [bridge getValue];
-    //self.dataLabel.text = @"Ready";
-
     
     popAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
     popAnimation.keyTimes = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.7],

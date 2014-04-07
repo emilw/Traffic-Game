@@ -24,17 +24,22 @@ class CVehicle: public CFrame
     
 private:
     int _id;
-    //string* _carType;
+    string _carType;
     //int _type;
     float _speed;
     bool _toBeRemoved = false;
+    bool _isNew = true;
 public:
     CVehicle(int newId, Color color, float width, float height);
     Color Color;
+    
+    bool IsNew();
+    void TurnOfIsNew();
+    
     //Getters
     int getID();
-    /*string* getCarType();
-    int getType();*/
+    string getCarType();
+    //int getType();
     float getSpeed();
     
     //External objects

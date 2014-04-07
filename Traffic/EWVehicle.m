@@ -38,23 +38,6 @@
     return self;
 }
 
-/*
--(BOOL)outsideOfLane {
-    
-    CGFloat vehicle = self.center.y;
-    
-    CGFloat lane = -10.0;//self.goalLane.frame.size.height;//self.goalLane.center.y + self.goalLane.frame.size.height;
-    
-    //NSLog(@"Vehicle and Lane: %g, %g", vehicle, lane);
-    
-    if(vehicle < lane)
-        return YES;
-    
-    return NO;
-    
-}*/
-
-
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect

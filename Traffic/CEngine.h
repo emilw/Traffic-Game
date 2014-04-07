@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <thread>
 //#include <ctime>
 #include <chrono>
 #include "CVehicle.h"
@@ -29,6 +30,12 @@ public:
     CEngine(void (*printOutFunc) (string), CEnginePlugin* enginePlugin);
     CEngine(){};
     
+    //Mutex/Locks
+    std::mutex _vehicleArrayLock;
+    std::mutex _vehicleCounterLock;
+    std::mutex _laneArrayLock;
+    std::mutex _laneCounterLock;
+    
     //Internal
     string* getValue();
     CEnginePlugin* _enginePlugin;
@@ -41,16 +48,20 @@ public:
     //Lane methods
     CLane* GetNewLane(Color color);
     CLane* GetLane(int id);
+    CLane* GetRandomLane();
     
     //Vehicle methods
     void AddVehicle(CVehicle* vehicle);
     void RemoveVehicle(CVehicle* vehicle);
     vector<CVehicle> GetAllVehicles();
-    CVehicle* GetNewVehicle(CLane* starterLane);
+    void StartNewVehicle(CLane* starterLane);
     CPosition* GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTime);
     void MoveVehicle(int x, int y, CVehicle* vehicle);
     int GetNumberOfVehicles();
     CVehicle* GetVehicle(int id);
+    
+    //Thread method
+    static void CarStarter(CEngine* engine);
     
     //Game methods
     bool IsGameOver();
@@ -60,30 +71,28 @@ public:
     float GetTotalTime();
     long long GetTimestamp();
     void Resume();
-    
-    //Dummy tests
-    void ExecuteMethod(void (*func)());
+    void Pause();
+    bool IsPaused();
     void Log(string message);
-    //float _lastTimestamp = 0;
     
 private:
     int _carIdCounter = 0;
     int _laneIdCounter = 0;
     float _remainingTime = 20;
     float _totalTime = 0;
-    //Milliseconds
     long long _lastTimestampMilliseconds = 0;
-    //long _lastTimestamp = 0;
-    //std::chrono::steady_clock::time_point _lastTimestamp;
     
+    thread* _carStarter;
+    
+    //Internal engine methods
     int getNextCarId();
     int getNextLaneId();
     bool _gameOver;
     void (*logFunction) (string);
-    
-    //Internal engine methods
+    Color getRandomColor();
     float GetUpdatedDeltaTimeInSeconds();
     void AddExtraTime();
+    bool _paused = false;
 };
 
 #endif /* defined(__Traffic__CEngine__) */

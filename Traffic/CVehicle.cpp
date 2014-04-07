@@ -16,6 +16,23 @@ CVehicle::CVehicle(int newId, enum Color color, float width, float height)
     
     _speed = 100;
     Size = new CSize(width, height);
+    
+    switch(color){
+        case Color::GREEN:
+            _carType = "GreenCar";
+            break;
+        case Color::RED:
+            _carType = "RedCar";
+            break;
+        case Color::BLUE:
+            _carType = "BlueCar";
+            break;
+    }
+}
+
+string CVehicle::getCarType()
+{
+    return _carType;
 }
 
 float CVehicle::getSpeed()
@@ -40,8 +57,12 @@ int CVehicle::getType()
 
 bool CVehicle::EndOfTheRoad()
 {
-    if(Position->getY() < this->CurrentLane->ENDOFTHELANE)
-        return true;
+    if(this->CurrentLane != nullptr)
+    {
+        if(Position->getY() < this->CurrentLane->ENDOFTHELANE)
+            return true;
+    }
+    
     return false;
 }
 
@@ -61,36 +82,12 @@ void CVehicle::Move(float x, float y)
     this->Position->setY(y);
 }
 
-/*bool CVehicle::IsCollision(CVehicle *otherVehicle)
+bool CVehicle::IsNew()
 {
-    //Get the cordinates for the otherVehicle
-    if(otherVehicle->GetX1() < this->GetX2() &&
-       otherVehicle->GetX2() > this->GetX1() &&
-       otherVehicle->GetY1() < this->GetY2() &&
-       otherVehicle->GetY2() > this->GetY1()){
-        return true;
-    }
-    
-    return false;
+    return _isNew;
 }
 
-
-float CVehicle::GetX1()
+void CVehicle::TurnOfIsNew()
 {
-    return this->Position->getX() - (this->Size->GetWidth()/2);
+    _isNew = false;
 }
-
-float CVehicle::GetX2()
-{
-    return this->Position->getX() + (this->Size->GetWidth()/2);
-}
-
-float CVehicle::GetY1()
-{
-    return this->Position->getY() - (this->Size->GetHeight()/2);
-}
-
-float CVehicle::GetY2()
-{
-    return this->Position->getY() + (this->Size->GetHeight()/2);
-}*/
