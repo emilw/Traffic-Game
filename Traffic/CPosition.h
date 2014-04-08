@@ -17,7 +17,7 @@ private:
     float x;
     float y;
 public:
-    CPosition(int x = 0, int y = 0) { x = x; y = y;};
+    CPosition(int x = 0, int y = 0) { this->x = x; this->y = y;};
     float getX();
     float getY();
     void setY(float value);

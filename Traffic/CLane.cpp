@@ -8,10 +8,10 @@
 
 #include "CLane.h"
 
-CLane::CLane(int id, enum Color color, float width, float height)
+CLane::CLane(int id, enum Color color, float width, float height, float x)
 {
     _id = id;
-    Position = new CPosition();
+    Position = new CPosition(x, 0);
     Size = new CSize(width, height);
     Color = color;
 }

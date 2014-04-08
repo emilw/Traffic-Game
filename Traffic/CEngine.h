@@ -27,8 +27,14 @@ class CEngine
 {
 public:
     
-    CEngine(void (*printOutFunc) (string), CEnginePlugin* enginePlugin);
+    CEngine(void (*printOutFunc) (string), CEnginePlugin* enginePlugin, float screenWidth, float screenHeight);
     CEngine(){};
+    
+    
+    //Screen settings
+    float _screenHeight = 0;
+    float _screenWidth = 0;
+    
     
     //Mutex/Locks
     std::mutex _vehicleArrayLock;
@@ -37,7 +43,6 @@ public:
     std::mutex _laneCounterLock;
     
     //Internal
-    string* getValue();
     CEnginePlugin* _enginePlugin;
     
     
@@ -46,7 +51,7 @@ public:
     vector<CLane> _lanes;
     
     //Lane methods
-    CLane* GetNewLane(Color color);
+    CLane* GetNewLane(Color color, float x);
     CLane* GetLane(int id);
     CLane* GetRandomLane();
     

@@ -17,8 +17,19 @@
 @synthesize timeRemaining, viewController;
 
 -(void)awakeFromNib{
+    
     engine = [CEngineBridge alloc];
-    engine = [engine initWithController: self];
+    
+    /*UIView *rootView = [[[UIApplication sharedApplication] keyWindow]
+                        rootViewController].view;*/
+    CGRect originalFrame = [[UIScreen mainScreen] bounds];
+    /*CGRect adjustedFrame = [rootView convertRect:originalFrame fromView:nil];*/
+    
+    //CGFloat screenScale = [[UIScreen mainScreen] scale];
+    
+    //viewController.view.bounds.size.height;
+    
+    engine = [engine initWithController: self screenWidth:originalFrame.size.width screenHeight:originalFrame.size.height];
 }
 
 -(void)vehicleMoved: (EWVehicle*) vehicle point: (CGPoint)point{

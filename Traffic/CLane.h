@@ -17,7 +17,7 @@
 class CLane: public CFrame
 {
 public:
-    CLane(int id, Color color, float width, float height);
+    CLane(int id, Color color, float width, float height, float x);
     int getID();
     //CPosition* Position;
     const int ENDOFTHELANE = -10;

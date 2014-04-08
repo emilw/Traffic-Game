@@ -59,7 +59,7 @@
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch* touch = [touches anyObject];
-    NSLog(@"Vehicle %d moved", self.Id);
+    //NSLog(@"Vehicle %d moved", self.Id);
     
     [controller vehicleMoved: self point:[touch locationInView:self.superview]];
 }

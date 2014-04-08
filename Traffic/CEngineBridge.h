@@ -15,7 +15,7 @@
     EWTrafficController* _controller;
 }
 
--(id)initWithController: (EWTrafficController*) controller;
+-(id)initWithController: (EWTrafficController*) controller screenWidth: (float) screenWidth screenHeight: (float) screenHeight;
 -(EWLane*)SyncLaneWithEngine: (EWLane*) lane;
 -(void)UpdatePosition: (int) id;
 

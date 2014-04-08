@@ -23,7 +23,7 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
     NSMutableArray* vehicles;
     id self;
     
-    CEngineBridgeImpl(void (*printOutFunc) (string), void* fascadeObject): CEngine(printOutFunc, this), CEnginePlugin(fascadeObject)
+    CEngineBridgeImpl(void (*printOutFunc) (string), void* fascadeObject, float screenWidth, float screenHeight): CEngine(printOutFunc, this, screenWidth, screenHeight), CEnginePlugin(fascadeObject)
     {
         self = (__bridge id)_fascadeObject;
     };
@@ -77,8 +77,6 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
 
 -(void) GetNewVehicle:(int)Id carImage:(const char*)carImage x:(float)x y:(float)y
 {
-    
-    NSLog(@"In getNew vehicle");
     EWVehicle* v = [[EWVehicle alloc] initWithName: getNSString(carImage) id:Id];
     
     CGPoint position;
@@ -128,11 +126,10 @@ struct CEngineBridgeImpl : CEngine, CEnginePlugin
 
 -(EWLane*) SyncLaneWithEngine:(EWLane *)inputLane
 {
-    CLane* lane = _cEngine->GetNewLane((Color)inputLane.tag);
+    CLane* lane = _cEngine->GetNewLane((Color)inputLane.tag, inputLane.center.x);
     inputLane.Id = lane->getID();
-    lane->Position->setX(inputLane.center.x);
-    lane->Position->setY(inputLane.center.y);
-    
+    /*lane->Position->setX(inputLane.center.x);
+    lane->Position->setY(inputLane.center.y);*/
     return inputLane;
 }
 
@@ -156,11 +153,11 @@ CGPoint GetCGPointFromPosition(CPosition* cPosition)
     _cEngine->GetAllVehicles();
 }
 
-- (id) initWithController:(EWTrafficController *)controller
+- (id) initWithController:(EWTrafficController *)controller screenWidth: (float) screenWidth screenHeight: (float) screenHeight
 {
     _controller = controller;
     self = [super init];
-    _cEngine = new CEngineBridgeImpl(logFunction, (__bridge void*)(self));
+    _cEngine = new CEngineBridgeImpl(logFunction, (__bridge void*)(self), screenWidth, screenHeight);
     _vehicleDictionary = [[NSMutableDictionary alloc] initWithCapacity:10];
     return self;
 }

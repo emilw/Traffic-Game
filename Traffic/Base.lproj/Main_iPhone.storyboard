@@ -108,7 +108,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p7k-02-M5f" customClass="EWLane">
-                                <rect key="frame" x="55" y="0.0" width="58" height="568"/>
+                                <rect key="frame" x="55" y="0.0" width="66" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.16862745583057404" green="0.7725490927696228" blue="0.078431375324726105" alpha="0.20000000000000001" colorSpace="deviceRGB"/>
                                 <connections>
@@ -116,7 +116,7 @@
                                 </connections>
                             </view>
                             <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjW-ou-3T6" customClass="EWLane">
-                                <rect key="frame" x="132" y="0.0" width="57" height="568"/>
+                                <rect key="frame" x="121" y="0.0" width="76" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.99215692281723022" green="0.054901964962482452" blue="0.011764707043766975" alpha="0.20000000000000001" colorSpace="deviceRGB"/>
                                 <connections>
@@ -124,7 +124,7 @@
                                 </connections>
                             </view>
                             <view tag="2" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xz7-dw-1wc" customClass="EWLane">
-                                <rect key="frame" x="207" y="0.0" width="60" height="568"/>
+                                <rect key="frame" x="197" y="0.0" width="75" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.17254902422428131" green="0.0" blue="1" alpha="0.20000000000000001" colorSpace="deviceRGB"/>
                                 <color key="tintColor" red="0.17254902422428131" green="0.0" blue="1" alpha="0.10000000000000001" colorSpace="deviceRGB"/>

@@ -8,19 +8,28 @@
 
 #include "CEngine.h"
 
-CEngine::CEngine(void (*printOutFunc) (string), CEnginePlugin* plugin)
+CEngine::CEngine(void (*printOutFunc) (string), CEnginePlugin* plugin, float screenWidth, float screenHeight)
 {
     logFunction = printOutFunc;
+    _screenWidth = screenWidth;
+    _screenHeight = screenHeight;
     _gameOver = false;
     _enginePlugin = plugin;
 }
 
-CLane* CEngine::GetNewLane(Color color)
+CLane* CEngine::GetNewLane(Color color, float x)
 {
 #warning Should not be hard coded sizes, should be height according to the screen height and screen width / 3
-    CLane* newLane = new CLane(this->getNextLaneId(), color, 60, 568);
+    CLane* newLane = new CLane(this->getNextLaneId(), color, 60, _screenHeight, x);
     _lanes.push_back(*newLane);
-    Log("Lane with Id: " + to_string(newLane->getID()));
+    
+    string message;
+    
+    message = message + "Lane added with Id: " + to_string(newLane->getID());
+    message = message + " and width/height(" + to_string(newLane->Size->GetWidth()) + "/" + to_string(newLane->Size->GetHeight()) + ")";
+    message = message + " x/y(" + to_string(newLane->Position->getX()) + "/" + to_string(newLane->Position->getY()) + ")";
+
+    Log(message);
     
     return newLane;
 }
@@ -56,11 +65,6 @@ CVehicle* CEngine::GetVehicle(int id)
     return nullptr;
 }
 
-string* CEngine::getValue()
-{
-    return new string("Dude from cpp");
-}
-
 long long CEngine::GetTimestamp()
 {
     //Get the time poninter to now
@@ -75,20 +79,7 @@ long long CEngine::GetTimestamp()
 
 float CEngine::GetUpdatedDeltaTimeInSeconds()
 {
-    /*//Get the time poninter to now
-    auto now = std::chrono::system_clock::now();
-    
-    //Get the duration from epoch time point to now
-    auto duration = now.time_since_epoch();
-    
-    //Use the duration object to calculate the milliseconds from epoch to now
-    auto timestampNow = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();*/
-    
     auto timestampNow = GetTimestamp();
-    
-    
-    //cout << "milisecs: " << timestampNow << std::endl;
-    
     double deltaTime = 0;
     
     //Check if it's the first run
@@ -158,14 +149,14 @@ vector<CVehicle> CEngine::GetAllVehicles()
                 {
                     AddExtraTime();
                 }
-                Log("Car left the road end");
+                Log("Vehicle " + to_string(it->getID()) + " left the road end");
             }
             else if(it->IsToBeRemoved())
             {
                 int id = it->getID();
                 _vehicles.erase(it);
                 _enginePlugin->PostRemoveVehicle(id);
-                Log("Car was removed");
+                Log("Vehicle " + to_string(it->getID()) + " was removed");
             }
         
         
@@ -210,6 +201,7 @@ void CEngine::MoveVehicle(int x, int y, CVehicle *vehicle)
     {
         if(it->IsInFrame(x,y))
         {
+            Log("Vehicle " + to_string(vehicle->getID()) + " moved to lane " + to_string(it->getID()));
             vehicle->CurrentLane = &*it;
             break;
         }
@@ -243,7 +235,7 @@ CPosition* CEngine::GetVehiclesCurrentPosition(CVehicle* vehicle, float deltaTim
             position->setX(position->getX() + (lateralSpeed * deltaTime));
         
         
-        Log("Engine - Goal lane position x: " + to_string(goalLanePosition->getX()) + ", y: " + to_string(goalLanePosition->getY()));
+        Log("Current lane position x: " + to_string(goalLanePosition->getX()) + ", y: " + to_string(goalLanePosition->getY()));
     }
 
     
@@ -265,7 +257,7 @@ void CEngine::StartNewVehicle(CLane* starterLane)
     
     vehicle->CurrentLane = starterLane;
     vehicle->Position->setX(starterLane->Position->getX());
-    vehicle->Position->setY(480);
+    vehicle->Position->setY(starterLane->Size->GetHeight());
     
     Log("Starting new car in lane " + to_string(vehicle->CurrentLane->getID()));
     Log("Starting cordinates x: " + to_string(vehicle->Position->getX()) + " y: " + to_string(vehicle->Position->getY()));
@@ -379,9 +371,6 @@ void CEngine::CarStarter(CEngine* engine)
 void CEngine::GameOver(GameOverReason reason)
 {
     _gameOver = true;
-    //if(_carStarter->joinable())
-    //_carStarter->join();
-    //_carStarter->~thread();
     _enginePlugin->GameOver(reason);
 }
 
@@ -390,17 +379,9 @@ bool CEngine::IsGameOver()
     return _gameOver;
 }
 
-void Run()
-{
-    cout << "Dude";
-}
-
 void CEngine::StartGame()
 {
-    //thread first (CarStarter);
-    
     _carStarter = new thread(CarStarter, this);
-    //_carStarter (CarStarter);
 }
 
 void CEngine::Resume()
