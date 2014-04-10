@@ -29,21 +29,15 @@
 		201A038918C8F178008844C2 /* EWVehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 201A038818C8F178008844C2 /* EWVehicle.m */; };
 		201A038C18C90D4F008844C2 /* EWHighScore.m in Sources */ = {isa = PBXBuildFile; fileRef = 201A038B18C90D4F008844C2 /* EWHighScore.m */; };
 		201A038E18CA0A81008844C2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 201A038D18CA0A81008844C2 /* QuartzCore.framework */; };
-		201A039118CCEE03008844C2 /* CEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 201A038F18CCEE03008844C2 /* CEngine.cpp */; };
 		201A039418CD0A52008844C2 /* CEngineBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 201A039218CD0A52008844C2 /* CEngineBridge.mm */; };
 		201A039718CE077C008844C2 /* EWTrafficController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201A039618CE077C008844C2 /* EWTrafficController.m */; };
 		201A039B18CE530F008844C2 /* EWLane.m in Sources */ = {isa = PBXBuildFile; fileRef = 201A039A18CE530F008844C2 /* EWLane.m */; };
-		205C676E18ED8F060062A6CB /* CFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 205C676C18ED8F060062A6CB /* CFrame.cpp */; };
 		2083AAB618D4B13400E20919 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2083AAB518D4B13400E20919 /* AVFoundation.framework */; };
 		2083AAB818D4B1C400E20919 /* MusicTrack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2083AAB718D4B1C400E20919 /* MusicTrack.mp3 */; };
 		2083AABB18D4BB6000E20919 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2083AABA18D4BB6000E20919 /* AudioToolbox.framework */; };
 		2083AABD18D4BF7500E20919 /* screech.aif in Resources */ = {isa = PBXBuildFile; fileRef = 2083AABC18D4BF7500E20919 /* screech.aif */; };
 		2083AABF18D4BF8A00E20919 /* crash.aif in Resources */ = {isa = PBXBuildFile; fileRef = 2083AABE18D4BF8A00E20919 /* crash.aif */; };
-		20E8EFF518E1CB9F004361D5 /* CVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFF318E1CB9F004361D5 /* CVehicle.cpp */; };
-		20E8EFF818E30DFF004361D5 /* CLane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFF618E30DFF004361D5 /* CLane.cpp */; };
-		20E8EFFB18E45FBE004361D5 /* CPosition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFF918E45FBE004361D5 /* CPosition.cpp */; };
-		20E8EFFF18E8482B004361D5 /* CSize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8EFFD18E8482B004361D5 /* CSize.cpp */; };
-		20E8F00218E98ECC004361D5 /* CEnginePlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */; };
+		20B4D87718F485A6004FCE60 /* libTrafficEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B4D87618F485A6004FCE60 /* libTrafficEngine.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,33 +84,19 @@
 		201A038A18C90D4F008844C2 /* EWHighScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EWHighScore.h; sourceTree = "<group>"; };
 		201A038B18C90D4F008844C2 /* EWHighScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EWHighScore.m; sourceTree = "<group>"; };
 		201A038D18CA0A81008844C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		201A038F18CCEE03008844C2 /* CEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEngine.cpp; sourceTree = "<group>"; };
-		201A039018CCEE03008844C2 /* CEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEngine.h; sourceTree = "<group>"; };
 		201A039218CD0A52008844C2 /* CEngineBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CEngineBridge.mm; sourceTree = "<group>"; };
 		201A039318CD0A52008844C2 /* CEngineBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEngineBridge.h; sourceTree = "<group>"; };
 		201A039518CE077C008844C2 /* EWTrafficController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EWTrafficController.h; sourceTree = "<group>"; };
 		201A039618CE077C008844C2 /* EWTrafficController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EWTrafficController.m; sourceTree = "<group>"; };
 		201A039918CE530F008844C2 /* EWLane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EWLane.h; sourceTree = "<group>"; };
 		201A039A18CE530F008844C2 /* EWLane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EWLane.m; sourceTree = "<group>"; };
-		205C676B18ED7C730062A6CB /* SharedEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedEnum.h; sourceTree = "<group>"; };
-		205C676C18ED8F060062A6CB /* CFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFrame.cpp; sourceTree = "<group>"; };
-		205C676D18ED8F060062A6CB /* CFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFrame.h; sourceTree = "<group>"; };
 		2083AAB518D4B13400E20919 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2083AAB718D4B1C400E20919 /* MusicTrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusicTrack.mp3; sourceTree = "<group>"; };
 		2083AAB918D4B8D100E20919 /* MusicTrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusicTrack.mp3; sourceTree = "<group>"; };
 		2083AABA18D4BB6000E20919 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2083AABC18D4BF7500E20919 /* screech.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = screech.aif; sourceTree = "<group>"; };
 		2083AABE18D4BF8A00E20919 /* crash.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = crash.aif; sourceTree = "<group>"; };
-		20E8EFF318E1CB9F004361D5 /* CVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVehicle.cpp; sourceTree = "<group>"; };
-		20E8EFF418E1CB9F004361D5 /* CVehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVehicle.h; sourceTree = "<group>"; };
-		20E8EFF618E30DFF004361D5 /* CLane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLane.cpp; sourceTree = "<group>"; };
-		20E8EFF718E30DFF004361D5 /* CLane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLane.h; sourceTree = "<group>"; };
-		20E8EFF918E45FBE004361D5 /* CPosition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPosition.cpp; sourceTree = "<group>"; };
-		20E8EFFA18E45FBE004361D5 /* CPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPosition.h; sourceTree = "<group>"; };
-		20E8EFFD18E8482B004361D5 /* CSize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSize.cpp; sourceTree = "<group>"; };
-		20E8EFFE18E8482B004361D5 /* CSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSize.h; sourceTree = "<group>"; };
-		20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEnginePlugin.cpp; sourceTree = "<group>"; };
-		20E8F00118E98ECC004361D5 /* CEnginePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEnginePlugin.h; sourceTree = "<group>"; };
+		20B4D87618F485A6004FCE60 /* libTrafficEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTrafficEngine.a; path = "../../../../Library/Developer/Xcode/DerivedData/TrafficEngine-draogbhagfycjbcujyfmmminmoey/Build/Products/Debug/libTrafficEngine.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20B4D87718F485A6004FCE60 /* libTrafficEngine.a in Frameworks */,
 				2083AABB18D4BB6000E20919 /* AudioToolbox.framework in Frameworks */,
 				2083AAB618D4B13400E20919 /* AVFoundation.framework in Frameworks */,
 				201A038E18CA0A81008844C2 /* QuartzCore.framework in Frameworks */,
@@ -172,6 +153,7 @@
 		201A034218C62674008844C2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				20B4D87618F485A6004FCE60 /* libTrafficEngine.a */,
 				2083AABA18D4BB6000E20919 /* AudioToolbox.framework */,
 				2083AAB518D4B13400E20919 /* AVFoundation.framework */,
 				201A038D18CA0A81008844C2 /* QuartzCore.framework */,
@@ -205,7 +187,6 @@
 				201A036118C62674008844C2 /* Main_iPad.storyboard */,
 				201A036418C62674008844C2 /* Images.xcassets */,
 				201A034A18C62674008844C2 /* Supporting Files */,
-				20E8EFF218E1CB79004361D5 /* EngineCpp */,
 				201A039218CD0A52008844C2 /* CEngineBridge.mm */,
 				201A039318CD0A52008844C2 /* CEngineBridge.h */,
 			);
@@ -252,28 +233,6 @@
 				201A035C18C62674008844C2 /* EWModelController.m */,
 			);
 			name = StandardTemplate;
-			sourceTree = "<group>";
-		};
-		20E8EFF218E1CB79004361D5 /* EngineCpp */ = {
-			isa = PBXGroup;
-			children = (
-				201A038F18CCEE03008844C2 /* CEngine.cpp */,
-				201A039018CCEE03008844C2 /* CEngine.h */,
-				20E8EFF318E1CB9F004361D5 /* CVehicle.cpp */,
-				20E8EFF418E1CB9F004361D5 /* CVehicle.h */,
-				20E8EFF618E30DFF004361D5 /* CLane.cpp */,
-				20E8EFF718E30DFF004361D5 /* CLane.h */,
-				20E8EFF918E45FBE004361D5 /* CPosition.cpp */,
-				20E8EFFA18E45FBE004361D5 /* CPosition.h */,
-				20E8EFFD18E8482B004361D5 /* CSize.cpp */,
-				20E8EFFE18E8482B004361D5 /* CSize.h */,
-				20E8F00018E98ECC004361D5 /* CEnginePlugin.cpp */,
-				20E8F00118E98ECC004361D5 /* CEnginePlugin.h */,
-				205C676B18ED7C730062A6CB /* SharedEnum.h */,
-				205C676C18ED8F060062A6CB /* CFrame.cpp */,
-				205C676D18ED8F060062A6CB /* CFrame.h */,
-			);
-			name = EngineCpp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,25 +337,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20E8F00218E98ECC004361D5 /* CEnginePlugin.cpp in Sources */,
 				201A035418C62674008844C2 /* EWAppDelegate.m in Sources */,
 				201A038618C7ABFE008844C2 /* EWTrafficViewController.m in Sources */,
 				201A038C18C90D4F008844C2 /* EWHighScore.m in Sources */,
-				201A039118CCEE03008844C2 /* CEngine.cpp in Sources */,
 				201A039418CD0A52008844C2 /* CEngineBridge.mm in Sources */,
-				20E8EFFF18E8482B004361D5 /* CSize.cpp in Sources */,
 				201A038918C8F178008844C2 /* EWVehicle.m in Sources */,
-				20E8EFFB18E45FBE004361D5 /* CPosition.cpp in Sources */,
 				201A035718C62674008844C2 /* EWRootViewController.m in Sources */,
 				201A039718CE077C008844C2 /* EWTrafficController.m in Sources */,
 				201A038318C77237008844C2 /* EWMainMenuViewController.m in Sources */,
 				201A035A18C62674008844C2 /* EWDataViewController.m in Sources */,
-				205C676E18ED8F060062A6CB /* CFrame.cpp in Sources */,
 				201A035D18C62674008844C2 /* EWModelController.m in Sources */,
 				201A039B18CE530F008844C2 /* EWLane.m in Sources */,
-				20E8EFF518E1CB9F004361D5 /* CVehicle.cpp in Sources */,
 				201A035018C62674008844C2 /* main.m in Sources */,
-				20E8EFF818E30DFF004361D5 /* CLane.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,12 +483,18 @@
 		201A037C18C62674008844C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Traffic/Traffic-Prefix.pch";
 				INFOPLIST_FILE = "Traffic/Traffic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/TrafficEngine-draogbhagfycjbcujyfmmminmoey/Build/Products/Debug",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "/Users/Emil/Library/Developer/Xcode/DerivedData/TrafficEngine-draogbhagfycjbcujyfmmminmoey/Build/Products/Debug/usr/local/include";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -544,11 +502,16 @@
 		201A037D18C62674008844C2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Traffic/Traffic-Prefix.pch";
 				INFOPLIST_FILE = "Traffic/Traffic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/TrafficEngine-draogbhagfycjbcujyfmmminmoey/Build/Products/Debug",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
