@@ -150,7 +150,7 @@ CGPoint GetCGPointFromPosition(CPosition* cPosition)
 
 //Updates all
 -(void)Update{
-    _cEngine->GetAllVehicles();
+    _cEngine->Update();
 }
 
 - (id) initWithController:(EWTrafficController *)controller screenWidth: (float) screenWidth screenHeight: (float) screenHeight

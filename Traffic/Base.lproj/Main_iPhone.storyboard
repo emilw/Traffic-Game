@@ -108,7 +108,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p7k-02-M5f" customClass="EWLane">
-                                <rect key="frame" x="55" y="0.0" width="66" height="568"/>
+                                <rect key="frame" x="55" y="0.0" width="65" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.16862745583057404" green="0.7725490927696228" blue="0.078431375324726105" alpha="0.20000000000000001" colorSpace="deviceRGB"/>
                                 <connections>
@@ -116,7 +116,7 @@
                                 </connections>
                             </view>
                             <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjW-ou-3T6" customClass="EWLane">
-                                <rect key="frame" x="121" y="0.0" width="76" height="568"/>
+                                <rect key="frame" x="122" y="0.0" width="76" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.99215692281723022" green="0.054901964962482452" blue="0.011764707043766975" alpha="0.20000000000000001" colorSpace="deviceRGB"/>
                                 <connections>
